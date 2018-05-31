@@ -1,0 +1,30 @@
+{
+  "name": "jobrecommender",
+  "version": "1.0.0",
+  "description": "job search engine",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SobhanCs/Maktab13_jobTeam.git"
+  },
+  "keywords": [
+    "job",
+    "crawler",
+    "finder",
+    "recommender",
+    "employee",
+    "career"
+  ],
+  "author": "Seyed Sobhan Makki, Erfan Eivazi, Hesam Rajaei",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SobhanCs/Maktab13_jobTeam/issues"
+  },
+  "homepage": "https://github.com/SobhanCs/Maktab13_jobTeam#readme",
+  "dependencies": {
+    "nodemon": "^1.17.5"
+  }
+}

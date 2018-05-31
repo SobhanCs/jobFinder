@@ -25,7 +25,7 @@ function crawler(url, params, structObj) {
             // console.log(response);
             $ = cheerio.load(response.data)
             
-            console.log($);
+            getLinksOfJobs(structObj)
 
             // fs.writeFileSync("first-card-data1.txt", $('html').text());
             // fs.writeFileSync("first-card-data.txt", String($().text()));
@@ -35,8 +35,21 @@ function crawler(url, params, structObj) {
 }
 
 
+crawler("https://jobinja.ir/jobs", {page: 2} , "h3.c-jobListView__title > a.c-jobListView__titleLink");
 
+function getdetailsOfLink(){
+    
+}
 
-crawler("https://jobinja.ir/jobs", {
-    page: 2
-});
+function getLinksOfJobs(structure){
+  
+    for(var i in $(structure)) {
+        // if (Number(i) == NaN) {
+        //     console.log($(structure).eq(i).attr("href"))
+        // }
+        console.log(Number(i))
+    }
+
+    getdetailsOfLink()
+}
+

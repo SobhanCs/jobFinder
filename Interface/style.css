@@ -1,0 +1,15 @@
+body{
+    background-color: black;
+}
+
+h3{
+    color: white;
+}
+
+label{
+    color: white;
+}
+
+.card-body{
+    height: 300px;
+}

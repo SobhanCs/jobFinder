@@ -14,6 +14,7 @@ var allData = [];
 console.log("server started");
 
 
+
 function generateUrl(prefixUrl, pageNumberUrl, suffixUrl, urlTarget) {
     let urlsArray = [];
     axios.get(prefixUrl + +pageNumberUrl + suffixUrl)
@@ -32,51 +33,45 @@ function generateUrl(prefixUrl, pageNumberUrl, suffixUrl, urlTarget) {
 // generateUrl("https://jobinja.ir/jobs", {page: 2} , "h3.c-jobListView__title > a.c-jobListView__titleLink" , "li.c-infoBox__item div");
 generateUrl("https://jobinja.ir/jobs?filters%5Bkeywords%5D%5B0%5D=&sort_by=published_at_desc&page=" ,3 ,"" ,"h3.c-jobListView__title > a.c-jobListView__titleLink");
 
-function getLinksOfJobs(urlTarget, conditionTarget){
 
-    for(var i in $(urlTarget)) {
-        
-            if ($(urlTarget).eq(i).attr("href") != undefined){
-                let UrlOfThisJobForShowMore = $(urlTarget).eq(i).attr("href");
-                // getdetailsOfLink(UrlOfThisJobForShowMore,conditionTarget)
-            }
-        
-    }
-}
 
-function getdetailsOfLink(url,target){
+function getUrlDetails(url,li,title,tag){//any li have a title and some tags --> title like : مهارت های مورد نیاز  and tags like : ux/sketch/css
     axios.get(url)
         .then(function (response) {
             //  console.log(response);
             $ = cheerio.load(response.data)
 
             let subject = "";
-            let items = [];
 
             let dataOfThisJob = [];
 
-            $(target).each(function(index){
+            $(li).each(function(i){
+                subject = $(this).find(title).text();
+                // console.log(subject);
+                let items = [];
 
-                subject = $(this).prev().text();
+                $(this).find(tag).each(function(){
+                    // console.log($(this).text());
+                    items.push($(this).text())
+                });
 
-                $(this).find("span").each(function(){
-                    items.push($(this).text());
-                })   
-                
-                dataOfThisJob.push({url:url ,
-                                    info:{subject:subject,
-                                        items:items}}
-                                    )
+                dataOfThisJob.push({
+                    subject : subject,
+                    items: items
+                })
 
-                
+            }) 
 
-                allData.push(dataOfThisJob)
-                
-            })
+            allData.push({url : url , data : dataOfThisJob})
+            storeData(allData);
+            
+
         })
+
 }
 
-function storeData(data){
+function storeData(data){//i don't know when call this function that allData synced
     //connect to mongo and update
-    console.log(allData)
+    console.log(data);
+
 }

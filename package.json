@@ -8,11 +8,7 @@
   "description": "job search engine",
   "main": "server.js",
   "scripts": {
-<<<<<<< HEAD
-	"start": "server.js"
-=======
     "start": "node server.js",
->>>>>>> 2c57558943b8dc5654b6b1d1f2e21341e12f9fde
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

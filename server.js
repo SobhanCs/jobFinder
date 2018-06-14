@@ -1,3 +1,5 @@
+//Crawler to scrap the websites sources
+
 //requires 
 const mongo = require("mongoose");
 const cheerio = require('cheerio');
@@ -12,31 +14,26 @@ var allData = [];
 console.log("server started");
 
 
-function crawler(url, params, urlOfJobTarget , liOfConditionsInJobTarget,targetOfTitleCondition,targetOfTagInTheTitle) {
-    axios.get(url, params)
+
+function generateUrl(prefixUrl, pageNumberUrl, suffixUrl, urlTarget) {
+    let urlsArray = [];
+    axios.get(prefixUrl + +pageNumberUrl + suffixUrl)
         .then(function (response){
-            //  console.log(response);
-            $ = cheerio.load(response.data)
-            
-            getLinksOfJobs(urlOfJobTarget,liOfConditionsInJobTarget,targetOfTitleCondition,targetOfTagInTheTitle)
-        })
-
-}
-
-crawler("https://jobinja.ir/jobs", {page: 2} , "h3.c-jobListView__title > a.c-jobListView__titleLink" , "li.c-infoBox__item", ".c-infoBox__itemTitle",".black");
-
-
-function getLinksOfJobs(urlTarget,liOfConditionTarget,targetOfTitleCondition,targetOfTagInTheTitle){
-
-    for(var i in $(urlTarget)) {
-        
-            if ($(urlTarget).eq(i).attr("href") != undefined){
-                let UrlOfThisJobForShowMore = $(urlTarget).eq(i).attr("href");
-                getUrlDetails(UrlOfThisJobForShowMore,liOfConditionTarget,targetOfTitleCondition,targetOfTagInTheTitle)
+            $ = cheerio.load(response.data);
+            for(var item in $(urlTarget)) {
+                if ( Number.isInteger(+item) ){
+                    urlsArray.push( $(urlTarget).eq(item).attr("href") );
+                }                        
             }
-        
-    }
+            console.log(urlsArray);
+            return urlsArray;
+        });
 }
+
+// generateUrl("https://jobinja.ir/jobs", {page: 2} , "h3.c-jobListView__title > a.c-jobListView__titleLink" , "li.c-infoBox__item div");
+generateUrl("https://jobinja.ir/jobs?filters%5Bkeywords%5D%5B0%5D=&sort_by=published_at_desc&page=" ,3 ,"" ,"h3.c-jobListView__title > a.c-jobListView__titleLink");
+
+
 
 function getUrlDetails(url,li,title,tag){//any li have a title and some tags --> title like : مهارت های مورد نیاز  and tags like : ux/sketch/css
     axios.get(url)

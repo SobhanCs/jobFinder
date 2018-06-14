@@ -1,11 +1,18 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 2c57558943b8dc5654b6b1d1f2e21341e12f9fde
 {
   "name": "jobrecommender",
   "version": "1.0.0",
   "description": "job search engine",
   "main": "server.js",
   "scripts": {
+<<<<<<< HEAD
 	"start": "server.js"
+=======
+    "start": "node server.js",
+>>>>>>> 2c57558943b8dc5654b6b1d1f2e21341e12f9fde
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -36,6 +43,7 @@
     "nodemon": "^1.17.5"
   }
 }
+<<<<<<< HEAD
 =======
 {
   "name": "jobrecommender",
@@ -74,3 +82,5 @@
   }
 }
 >>>>>>> 0f47f674f26e9d552443e2a9e356afc049e22bda
+=======
+>>>>>>> 2c57558943b8dc5654b6b1d1f2e21341e12f9fde

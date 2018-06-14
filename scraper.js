@@ -33,12 +33,12 @@ function generateUrl(prefixUrl, pageNumberUrl, suffixUrl, urlTarget) {
         });
 }
 
-generateUrl("https://jobinja.ir/jobs?filters%5Bkeywords%5D%5B0%5D=&sort_by=published_at_desc&page=" ,3 ,"" ,"h3.c-jobListView__title > a.c-jobListView__titleLink")
+generateUrl("https://jobinja.ir/jobs?filters%5Bkeywords%5D%5B0%5D=&sort_by=published_at_desc&page=" ,3 ,"" ,"h3.c-jobListView__title > a.c-jobListView__titleLink",
+    function(){
+        console.log("data is ready");
+        storeData(allData);
+    })
 
-setTimeout(() => {
-    console.log("data is ready");
-    storeData(allData);
-}, 10000)
     
 
 

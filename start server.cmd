@@ -1,0 +1,1 @@
+nodemon scraper.js

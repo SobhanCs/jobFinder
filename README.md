@@ -10,4 +10,4 @@ To create an online platform for communication and meeting between Iranian profe
 Becoming the premium online reference for Iranian professionals and managers
 
 # The Team
-IranTalent.com is run by a team of young professionals in various teams including Sales, Human Resource Management, Quality Management, Marketing, Product Development and Technical.
+This website is run by a team of young professionals in various teams including Sales, Human Resource Management, Quality Management, Marketing, Product Development and Technical.

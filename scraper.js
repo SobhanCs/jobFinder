@@ -13,7 +13,7 @@ let $, repeated = 0;
 console.log("Crawler started...");
 
 // Connect to MongoDB
-mongoose.connect("mongodb://localhost/jobteam");
+mongoose.connect("mongodb://localhost:27017/jobteam");
 let db = mongoose.connection;
 
 // mongodb status
@@ -35,8 +35,8 @@ let jobSchema =  new mongoose.Schema({
         require: true
     }, // use the link of job as id
     title: {
-        type: String,
-        require: true
+        type: String
+        // require: true
     },
     typeOfJob: String,
     location: String,
@@ -56,28 +56,15 @@ let jobSchema =  new mongoose.Schema({
         require: true
     },
     description: String,
-    expireDate: Date,
-    crawlTime: Date,
-    experience: String
+    expireTime: String,
+    crawlTime: String,
+    experience: String,
+    description: String,
+    logoSource : String,
+    companyName : String
 });
 
-let jobModel = mongoose.model("jobModel", jobSchema);
-
-// job.save(function (err, job) {     //save in mongobd
-//     if (err) {
-//         throw err
-//     }
-//     console.log(job)
-// });
-
-// jobModel.find({       //find in mongodb
-//     name: "job"
-// }, function (err, user) {
-//     if (err) {
-//         throw err
-//     }
-//     console.log("Found !", user)
-// });
+let jobModel = mongoose.model("jobModel", jobSchema, 'jobModel'); // the name of collection by erfan
 
 function generateUrl(prefixUrl, pageNumberUrl, suffixUrl, urlTarget) {
     let urlsArray = [];
@@ -92,33 +79,30 @@ function generateUrl(prefixUrl, pageNumberUrl, suffixUrl, urlTarget) {
             // console.log(urlsArray);
             // return urlsArray;
             urlsArray.forEach(item => {
-                getUrlDetails(item, "li.c-infoBox__item", ".c-infoBox__itemTitle", ".black");
+                getUrlDetails(item,".o-box__text ","li.c-infoBox__item", ".c-infoBox__itemTitle", ".black",".c-companyHeader__logoImage",".c-companyHeader__name",".u-textCenter.u-textSmall.u-mB0 b")
             });
-
-
         });
-
 }
 
-function startCrawler(storeData) {
+function startCrawler() {
     let page = 1;
 
-    // while (page < 3) { //repeated<10
+     while (page < 3) { //repeated<10
 
-    generateUrl("https://jobinja.ir/jobs?filters%5Bkeywords%5D%5B0%5D=&sort_by=published_at_desc&page=", page, "", "h3.c-jobListView__title > a.c-jobListView__titleLink")
+        generateUrl("https://jobinja.ir/jobs?filters%5Bkeywords%5D%5B0%5D=&sort_by=published_at_desc&page=", page, "", "h3.c-jobListView__title > a.c-jobListView__titleLink")
 
-    // page++;
+        page++;
 
-    // if (false) { //when a job already exist
-    // repeated++;
-    // }
-    // }
+        if (false) { //when a job already exist
+            repeated++;
+        }
+     }
 }
 
-startCrawler(storeData);
+startCrawler();
 
 
-function getUrlDetails(url, li, title, tag, callBack) { //any li have a title and some tags --> title like : مهارت های مورد نیاز  and tags like : ux/sketch/css
+function getUrlDetails(url,description,li, title, tag,logo,name,expire) { //any li have a title and some tags --> title like : مهارت های مورد نیاز  and tags like : ux/sketch/css
     axios.get(url)
         .then(function (response) {
             //  console.log(response);
@@ -131,9 +115,11 @@ function getUrlDetails(url, li, title, tag, callBack) { //any li have a title an
             let finall = {url : url,
                           id : "our detail url",
                           crawlTime: "امروز",
-                          expireTime: "۲۰ روز"
+                          expireTime: $(expire).text().replace(/ روز/g,''),
+                          description: $(description).text(),
+                          logoSource : $(logo).attr("src"),
+                          companyName : $(name).text()
             }
-
             $(li).each(function () {
                 subject = $(this).find(title).text();
                 // console.log(subject);
@@ -168,15 +154,11 @@ function getUrlDetails(url, li, title, tag, callBack) { //any li have a title an
                             ["حداقل مدرک تحصیلی","education"],
                             ];
                             
-                //console.log('{URL : "' + element.url + '",\nDATA: { ');
-                // str += '{URL : "' + element.url https://insiders.liveshare.vsengsaas.visualstudio.com/join?4E2F82AD9920860B4C3FD37AFE3F5649A8A6+ '",\nDATA: { \n';
-                data["preRequire"].forEach(function (dataElement) {
-                    //console.log('\tTitle : "' + dataElement.subject + ' " ,\n\tItems :');
-                    // str += '\tTitle : "' + dataElement.subject + ' " ,\n\tItems :\n';
+                      data["preRequire"].forEach(function (dataElement) {
+                   
                     thisItems = [];
                     dataElement["items"].forEach(function (items) { // Use forEach for tags
-                        //console.log("\t" + items + "\n}\n}");
-                        // str += "\t" + items + "\n"                 
+                       
                         thisItems.push(items.trim().replace(/  /g,''))
                     })
 
@@ -190,29 +172,9 @@ function getUrlDetails(url, li, title, tag, callBack) { //any li have a title an
                 })
                 console.log(finall);
                 jobModel.insertMany(finall,
-                   function () {
+                   function (err, response) {
+                       if(err){throw err}
+                       console.log("Successfuly saved !")
                 });
-        //str += "------------------------------------------"
-        //console.log("----------------------------------------");
-        //fs.appendFileSync("first-card-data",str);
-
-        // "url : " + element.url + "\n"
-        //console.log(element.data.forEach({}));
-
-                // console.log(allData)
-
-    }) //.done(function () {
-            //storeData(allData) BAD PLACE :(
-            // })
-
-}
-
-
-
-function storeData(data) { // i don't know when call this function that allData synced
-    // connect to mongo and update
-    // console.log(data);
-    // fs.writeFileSync("first-card-data",data)
-
-    
+    }) 
 }

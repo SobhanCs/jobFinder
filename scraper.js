@@ -1,27 +1,90 @@
-//Crawler to scrap the websites sources
+//Crawler to scrap the job websites sources
 
 //requires
-const mongo = require("mongoose");
+const mongoose = require("mongoose");
 const cheerio = require('cheerio');
 const fs = require("fs");
 const axios = require("axios");
 
 //global variables
-var $,repeated=0;
-var allData = [];
+let $, repeated = 0;
 
+// crawler start
+console.log("Crawler started...");
 
-//#crawler start
-console.log("server started");
+// Connect to MongoDB
+mongoose.connect("mongodb://localhost/jobteam");
+let db = mongoose.connection;
 
+// mongodb status
+db.on('error', function () {
+    console.log("We are not connected to MongoDB !");
+});
+db.once('connected', function () {
+    console.log("We are connected to MongoDB !")
+});
 
+// defining jonSchema in mongodb
+let jobSchema =  new mongoose.Schema({
+    url: {
+        type: String,
+        require: true
+    }, // target url
+    id: {
+        type: String,
+        require: true
+    }, // use the link of job as id
+    title: {
+        type: String,
+        require: true
+    },
+    typeOfJob: String,
+    location: String,
+    typeOfCollaboration: String,
+    Salary: String,
+    militeryService: String,
+    skill: {
+        type: Array,
+        require: true
+    },
+    sex: String,
+    relativeField: [],
+    education: [],
+    logo: String,
+    companyName: {
+        type: String,
+        require: true
+    },
+    description: String,
+    expireDate: Date,
+    crawlTime: Date,
+    experience: String
+});
+
+let jobModel = mongoose.model("jobModel", jobSchema);
+
+// job.save(function (err, job) {     //save in mongobd
+//     if (err) {
+//         throw err
+//     }
+//     console.log(job)
+// });
+
+// jobModel.find({       //find in mongodb
+//     name: "job"
+// }, function (err, user) {
+//     if (err) {
+//         throw err
+//     }
+//     console.log("Found !", user)
+// });
 
 function generateUrl(prefixUrl, pageNumberUrl, suffixUrl, urlTarget) {
     let urlsArray = [];
     axios.get(prefixUrl + +pageNumberUrl + suffixUrl)
         .then(function (response) {
             $ = cheerio.load(response.data);
-            for (var item in $(urlTarget)) {
+            for (let item in $(urlTarget)) {
                 if (Number.isInteger(+item)) {
                     urlsArray.push($(urlTarget).eq(item).attr("href"));
                 }
@@ -29,7 +92,7 @@ function generateUrl(prefixUrl, pageNumberUrl, suffixUrl, urlTarget) {
             // console.log(urlsArray);
             // return urlsArray;
             urlsArray.forEach(item => {
-                getUrlDetails(item, "li.c-infoBox__item", ".c-infoBox__itemTitle", ".black")
+                getUrlDetails(item, "li.c-infoBox__item", ".c-infoBox__itemTitle", ".black");
             });
 
 
@@ -38,18 +101,18 @@ function generateUrl(prefixUrl, pageNumberUrl, suffixUrl, urlTarget) {
 }
 
 function startCrawler(storeData) {
-    var page = 1;
+    let page = 1;
 
-    while(page<172){//repeated<10
+    // while (page < 3) { //repeated<10
 
-        generateUrl("https://jobinja.ir/jobs?filters%5Bkeywords%5D%5B0%5D=&sort_by=published_at_desc&page=", page, "", "h3.c-jobListView__title > a.c-jobListView__titleLink")
+    generateUrl("https://jobinja.ir/jobs?filters%5Bkeywords%5D%5B0%5D=&sort_by=published_at_desc&page=", page, "", "h3.c-jobListView__title > a.c-jobListView__titleLink")
 
-        page ++;
+    // page++;
 
-        if(false){//when a job already exist
-            repeated ++;
-        }
-    }
+    // if (false) { //when a job already exist
+    // repeated++;
+    // }
+    // }
 }
 
 startCrawler(storeData);
@@ -63,68 +126,93 @@ function getUrlDetails(url, li, title, tag, callBack) { //any li have a title an
 
             let subject = "";
 
-            let dataOfThisJob = [];
+            let dataOfThisLi = [];
 
-            $(li).each(function (i) {
+            let finall = {url : url,
+                          id : "our detail url",
+                          crawlTime: "امروز",
+                          expireTime: "۲۰ روز"
+            }
+
+            $(li).each(function () {
                 subject = $(this).find(title).text();
                 // console.log(subject);
-                let items = [];
+                let items = [], data = {};
 
                 $(this).find(tag).each(function () {
                     // console.log($(this).text());
                     items.push($(this).text())
                 });
 
-                dataOfThisJob.push({
+                dataOfThisLi.push({
                     subject: subject,
                     items: items
                 })
-
-                allData.push({
+            })     
+                data = {
                     url: url,
-                    data: dataOfThisJob
+                    preRequire: dataOfThisLi
+                }
+                //console.log(data);
+
+                relation = [
+                            ["عنوان","title"],
+                            ["دسته بندی شغلی","typeOfJob"],
+                            ["موقعیت مکانی","location"],
+                            ["نوع همکاری","typeOfCollabration"],
+                            ["حقوق","Salary"],
+                            ["وضعیت نظام وظیفه","militeryService"],
+                            ["مهارت های مورد نیاز","skill"],
+                            ["جنسیت","sex"],
+                            ["رشته‌های تحصیلی مرتبط","relativeField"],
+                            ["حداقل مدرک تحصیلی","education"],
+                            ];
+                            
+                //console.log('{URL : "' + element.url + '",\nDATA: { ');
+                // str += '{URL : "' + element.url https://insiders.liveshare.vsengsaas.visualstudio.com/join?4E2F82AD9920860B4C3FD37AFE3F5649A8A6+ '",\nDATA: { \n';
+                data["preRequire"].forEach(function (dataElement) {
+                    //console.log('\tTitle : "' + dataElement.subject + ' " ,\n\tItems :');
+                    // str += '\tTitle : "' + dataElement.subject + ' " ,\n\tItems :\n';
+                    thisItems = [];
+                    dataElement["items"].forEach(function (items) { // Use forEach for tags
+                        //console.log("\t" + items + "\n}\n}");
+                        // str += "\t" + items + "\n"                 
+                        thisItems.push(items.trim().replace(/  /g,''))
+                    })
+
+                    relation.forEach(item => {
+                        if(item[0] == dataElement.subject){
+                            finall[item[1]] = thisItems;                   
+                        }                   
+                    })
+                    
+                    
                 })
-
-            }).done(function(){
-
-
-                storeData(allData)//BAD PLACE :(
-            })
-
-
-
-
-
-        })
-
-}
-
-function storeData(data) { //i don't know when call this function that allData synced
-    //connect to mongo and update
-    // console.log(data);
-    // fs.writeFileSync("first-card-data",data)
-
-    data.forEach(function (element) {
-        var str = "";
-
-        // console.log('{URL : "' + element.url + '",\nDATA: { ');
-        str += '{URL : "' + element.url + '",\nDATA: { \n';
-        element["data"].forEach(function(dataElement) {
-            // console.log('\tTitle : "' + dataElement.subject +' " ,\n\tItems :');
-            str += '\tTitle : "' + dataElement.subject +' " ,\n\tItems :\n';
-            dataElement["items"].forEach(function(items) {
-                // console.log("\t" + items + "\n}\n}");
-                str += "\t" + items + "\n"
-
-            })
-            //
-        })
-        str += "------------------------------------------"
-        // console.log("----------------------------------------");
+                console.log(finall);
+                jobModel.insertMany(finall,
+                   function () {
+                });
+        //str += "------------------------------------------"
+        //console.log("----------------------------------------");
         //fs.appendFileSync("first-card-data",str);
 
         // "url : " + element.url + "\n"
         //console.log(element.data.forEach({}));
 
-    })
+                // console.log(allData)
+
+    }) //.done(function () {
+            //storeData(allData) BAD PLACE :(
+            // })
+
+}
+
+
+
+function storeData(data) { // i don't know when call this function that allData synced
+    // connect to mongo and update
+    // console.log(data);
+    // fs.writeFileSync("first-card-data",data)
+
+    
 }

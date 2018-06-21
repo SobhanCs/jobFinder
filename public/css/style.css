@@ -1,0 +1,102 @@
+@font-face {
+    font-family: 'b koodak';
+    src: url('../fonts/BKoodakBold.eot?#') format('eot'), /* IE6–8 */
+    url('../fonts/BKoodakBold.woff') format('woff'), /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+    url('../fonts/BKoodakBold.ttf') format('truetype');
+    /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+
+@font-face {
+    font-family: 'b yekan';
+    src: url('../fonts/BYekan.woff') format('woff');
+    /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+}
+
+@font-face {
+    font-family: 'a ghasem';
+    src: url('../fonts/AGhasem.ttf') format('truetype');
+    /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+}
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    font-family: "b yekan";
+}
+
+.card {
+    font-family: 'b koodak';
+}
+
+/* main {
+    /* background-image: url('../img/Handshake-close-up-of-executives/O6JTUC0.jpg');
+      background-repeat: no-repeat;
+      background-size: cover; */
+    /* height: 500px; */
+    /* background-color: whitesmoke; */
+/* } */
+
+#logo {
+    font-family: 'a ghasem';
+    font-size: 90px;
+    padding-top: 90px;
+}
+
+nav .brand-logo {
+    font-family: 'a ghasem';
+    font-size: 30px;
+    position: relative;
+    display: flex;
+    padding: 0 15px;
+    left: 0;
+    -webkit-transform: none;
+    transform: none;
+}
+
+#idSearch {
+    width: 75%;
+    margin-right: 10%;
+    height: 40px;
+    border-radius: 2px;
+    border: 0px solid grey;
+    padding-right: 13px;
+}
+
+#searchBar {
+    width: 40%;
+    height: 40px;
+    border-radius: 2px;
+    border: 0px solid grey;
+    padding-right: 13px;
+    margin-left: auto;
+}
+
+#searchBar .btnSearch {
+    margin-top: 2px;
+    padding: 0 7px;
+}
+
+#idSearch input, #searchBar input {
+    font-family: 'b koodak';
+    font-size: 20px;
+    width: 100%;
+    border: 0;
+}
+
+#idSearch input:focus, #searchBar input:focus {
+    outline-width: 0;
+}
+
+.btnSearch {
+    margin-top: 10px;
+    font-size: 42px;
+    border-radius: 2px;
+}
+
+.btnSearch:hover {
+    color: #ce3331 !important;
+}

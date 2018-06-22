@@ -7,7 +7,8 @@ const fs = require("fs");
 const axios = require("axios");
 
 //global variables
-let $, repeated = 0;
+let $, repeated = 0,
+    i = 0;
 
 var sources = {
     "jobinja": {
@@ -17,7 +18,7 @@ var sources = {
             "page": 1
         },
         "target": {
-            "subject":".c-jobView__titleText",
+            "subject": ".c-jobView__titleText",
             "linksOfJob": "h3.c-jobListView__title > a.c-jobListView__titleLink",
             "conditions": "li.c-infoBox__item",
             "titleOfConditions": ".c-infoBox__itemTitle",
@@ -28,7 +29,7 @@ var sources = {
             "companyName": ".c-companyHeader__name"
         },
         "lastCrawlDate": true,
-        lastJobThatSortedByDate:""
+        lastJobThatSortedByDate: ""
     }
 }
 
@@ -85,8 +86,8 @@ let jobSchema = new mongoose.Schema({
     expireTime: String,
     crawlTime: String,
     experience: String,
-    logoSource : String,
-    companyName : String
+    logoSource: String,
+    companyName: String
 });
 
 let jobModel = mongoose.model("jobModel", jobSchema, 'jobModel'); // the name of collection by erfan
@@ -95,74 +96,71 @@ let jobModel = mongoose.model("jobModel", jobSchema, 'jobModel'); // the name of
 // generateUrl() crawl a page and output an array of links of the page. 
 function generateUrl(prefixUrl, pageNumberUrl, suffixUrl, urlTarget) {
     let urlsArray = [];
-    axios.get(prefixUrl + +pageNumberUrl + suffixUrl)   // put a request to a url and get its html source
+    axios.get(prefixUrl + +pageNumberUrl + suffixUrl) // put a request to a url and get its html source
         .then(function (response) {
-            $ = cheerio.load(response.data);            // render received html source to can working it as a jquery syntax
-            for (let item in $(urlTarget)) {            // loop on all our target items
-                if (Number.isInteger(+item)) {          // filter only urls in page - urls' name are explicitly a number
-                    urlsArray.push($(urlTarget).eq(item).attr("href"));     // read href attribute of tag 'a' and push it into output array
+            $ = cheerio.load(response.data); // render received html source to can working it as a jquery syntax
+            
+            console.log("pageNumber :  " + pageNumberUrl);
+
+            for (let item in $(urlTarget)) { // loop on all our target items
+                if (Number.isInteger(+item)) { // filter only urls in page - urls' name are explicitly a number
+                    urlsArray.push($(urlTarget).eq(item).attr("href")); // read href attribute of tag 'a' and push it into output array
                 }
             }
-
 
             urlsArray.forEach(item => {
                 getUrlDetails(item, sources.jobinja.target)
 
             });
-        });
+        //})
+            if(sources.jobinja.url.page < 19){
+                sources.jobinja.url.page++;
+                generateUrl(sources.jobinja.url.prefix, sources.jobinja.url.page, sources.jobinja.url.suffix, sources.jobinja.target.linksOfJob)
+
+            }
+            
+        })
+        //.then(function () {
+
 }
 
+generateUrl(sources.jobinja.url.prefix, sources.jobinja.url.page, sources.jobinja.url.suffix, sources.jobinja.target.linksOfJob)
 
-function startCrawler(website) {
-
-    while (website.url.page < 3) { //repeated<10
-
-        generateUrl(website.url.prefix , website.url.page , website.url.suffix , website.target.linksOfJob)
-
-        website.url.page ++;
-
-        // if (false) { //when a job already exist
-        // repeated++;
-        // }
-    }
-}
-
-startCrawler(sources.jobinja);
 
 //this function get a link that is a new job ,this job need to reed data and target help us for select any items in detail
-function getUrlDetails(url , target) {
-    axios.get(url)//axios make request and get data of detail page
+function getUrlDetails(url, target) {
+    axios.get(url) //axios make request and get data of detail page
         .then(function (response) {
-            $ = cheerio.load(response.data)//cherio get data from axios and help us to select objects in html source like jquery
+            $ = cheerio.load(response.data) //cherio get data from axios and help us to select objects in html source like jquery
 
-            let subject = "";//subject like : ...جنسیت و حداقل مدرک و حقوق و 
+            let subject = ""; //subject like : ...جنسیت و حداقل مدرک و حقوق و 
 
-            let dataOfThisLi = [];//a array that have ["جنسیت","مرد"]
-
-
-            let final = {//finall is an object that will append to data base
+            let dataOfThisLi = []; //a array that have ["جنسیت","مرد"]
+            
+            let final = { //finall is an object that will append to data base
                 url: url,
                 id: "our detail url",
-                crawlTime: "امروز",
+                crawlTime: repeated,
                 expireTime: $(target.expire).text().replace(/ روز/g, ''),
                 description: $(target.description).text(),
                 logoSource: $(target.logoOfCompany).attr("src"),
                 companyName: $(target.companyName).text(),
+                title: $(target.subject).text().trim().replace(/استخدام/g, "")
             }
 
             $(target.conditions).each(function () {
                 //fill subjects in foreach and get tags of this subject in next forEach
                 subject = $(this).find(target.titleOfConditions).text(); //like "مهارت ها"
 
-                let items = [],//an array that have tags in a subject like ["ui/ux","html","css","js"]
-                    data = {};//this object join subject and their tags to url
+                let items = [], //an array that have tags in a subject like ["ui/ux","html","css","js"]
+                    data = {}; //this object join subject and their tags to url
 
 
                 $(this).find(target.tagInTitleOfConditions).each(function () {
                     items.push($(this).text())
                 });
 
-                dataOfThisLi.push({//join tags to subject
+                dataOfThisLi.push({ //join tags to subject
                     subject: subject,
                     items: items
                 })
@@ -190,21 +188,25 @@ function getUrlDetails(url , target) {
             data["preRequire"].forEach(function (dataElement) {
                 thisItems = [];
                 dataElement["items"].forEach(function (items) { // Use forEach for tags
-                   thisItems.push(items.trim().replace(/  /g, ''))//get items in title and remove whitespace
+                    thisItems.push(items.trim().replace(/  /g, '')) //get items in title and remove whitespace
                 })
 
                 relation.forEach(item => {
                     if (item[0] == dataElement.subject) {
-                        final[item[1]] = thisItems;//add other field and data to finall 
+                        final[item[1]] = thisItems; //add other field and data to finall 
                     }
                 })
 
 
             })
+            // console.log(final);
+
+            // i++;
             //log finall and add to database - final is an object of a job
-            console.log(final);
             jobModel.insertMany(final,
-                function () {});
-        }) 
+                function () {
+                    // console.log(i);
+                });
+        })
 
 }

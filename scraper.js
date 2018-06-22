@@ -21,7 +21,7 @@ db.on('error', function () {
     console.log("We are not connected to MongoDB !");
 });
 db.once('connected', function () {
-    console.log("We are connected to MongoDB !")
+    console.log("We are connected to MongoDB !");
 });
 
 // defining jonSchema in mongodb
@@ -59,27 +59,25 @@ let jobSchema =  new mongoose.Schema({
     expireTime: String,
     crawlTime: String,
     experience: String,
-    description: String,
     logoSource : String,
     companyName : String
 });
 
 let jobModel = mongoose.model("jobModel", jobSchema, 'jobModel'); // the name of collection by erfan
 
+// generateUrl() crawl a page and output an array of links of the page. 
 function generateUrl(prefixUrl, pageNumberUrl, suffixUrl, urlTarget) {
     let urlsArray = [];
-    axios.get(prefixUrl + +pageNumberUrl + suffixUrl)
+    axios.get(prefixUrl + +pageNumberUrl + suffixUrl)   // put a request to a url and get its html source
         .then(function (response) {
-            $ = cheerio.load(response.data);
-            for (let item in $(urlTarget)) {
-                if (Number.isInteger(+item)) {
-                    urlsArray.push($(urlTarget).eq(item).attr("href"));
+            $ = cheerio.load(response.data);            // render received html source to can working it as a jquery syntax
+            for (let item in $(urlTarget)) {            // loop on all our target items
+                if (Number.isInteger(+item)) {          // filter only urls in page - urls' name are explicitly a number
+                    urlsArray.push($(urlTarget).eq(item).attr("href"));     // read href attribute of tag 'a' and push it into output array
                 }
             }
-            // console.log(urlsArray);
-            // return urlsArray;
             urlsArray.forEach(item => {
-                getUrlDetails(item,".o-box__text ","li.c-infoBox__item", ".c-infoBox__itemTitle", ".black",".c-companyHeader__logoImage",".c-companyHeader__name",".u-textCenter.u-textSmall.u-mB0 b")
+                getUrlDetails(item,".o-box__text ","li.c-infoBox__item", ".c-infoBox__itemTitle", ".black",".c-companyHeader__logoImage",".c-companyHeader__name",".u-textCenter.u-textSmall.u-mB0 b");
             });
         });
 }
@@ -106,7 +104,7 @@ function getUrlDetails(url,description,li, title, tag,logo,name,expire) { //any 
     axios.get(url)
         .then(function (response) {
             //  console.log(response);
-            $ = cheerio.load(response.data)
+            $ = cheerio.load(response.data);
 
             let subject = "";
 

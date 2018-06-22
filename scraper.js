@@ -36,7 +36,7 @@ var sources = {
 console.log("Crawler started...");
 
 // Connect to MongoDB
-mongoose.connect("mongodb://localhost/jobteam");
+mongoose.connect("mongodb://localhost:27017/jobteam");
 let db = mongoose.connection;
 
 // mongodb status
@@ -44,7 +44,7 @@ db.on('error', function () {
     console.log("We are not connected to MongoDB !");
 });
 db.once('connected', function () {
-    console.log("We are connected to MongoDB !")
+    console.log("We are connected to MongoDB !");
 });
 
 // defining jonSchema in mongodb
@@ -58,8 +58,10 @@ let jobSchema = new mongoose.Schema({
         require: true
     }, // use the link of job as id
     title: {
-        type: String //,
-        //require: true
+
+        type: String
+        // require: true
+
     },
     typeOfJob: String,
     location: String,
@@ -79,33 +81,37 @@ let jobSchema = new mongoose.Schema({
         require: true
     },
     description: String,
-    expireDate: String,
+
+    expireTime: String,
     crawlTime: String,
-    experience: String
+    experience: String,
+    logoSource : String,
+    companyName : String
 });
 
-let jobModel = mongoose.model("jobModel", jobSchema);
+let jobModel = mongoose.model("jobModel", jobSchema, 'jobModel'); // the name of collection by erfan
 
 
+// generateUrl() crawl a page and output an array of links of the page. 
 function generateUrl(prefixUrl, pageNumberUrl, suffixUrl, urlTarget) {
     let urlsArray = [];
-    axios.get(prefixUrl + +pageNumberUrl + suffixUrl)
+    axios.get(prefixUrl + +pageNumberUrl + suffixUrl)   // put a request to a url and get its html source
         .then(function (response) {
-            $ = cheerio.load(response.data);
-            for (let item in $(urlTarget)) {
-                if (Number.isInteger(+item)) {
-                    urlsArray.push($(urlTarget).eq(item).attr("href"));
+            $ = cheerio.load(response.data);            // render received html source to can working it as a jquery syntax
+            for (let item in $(urlTarget)) {            // loop on all our target items
+                if (Number.isInteger(+item)) {          // filter only urls in page - urls' name are explicitly a number
+                    urlsArray.push($(urlTarget).eq(item).attr("href"));     // read href attribute of tag 'a' and push it into output array
                 }
             }
 
+
             urlsArray.forEach(item => {
                 getUrlDetails(item, sources.jobinja.target)
+
             });
-
-
         });
-
 }
+
 
 function startCrawler(website) {
 
@@ -133,6 +139,7 @@ function getUrlDetails(url , target) {
 
             let dataOfThisLi = [];//a array that have ["جنسیت","مرد"]
 
+
             let final = {//finall is an object that will append to data base
                 url: url,
                 id: "our detail url",
@@ -150,6 +157,7 @@ function getUrlDetails(url , target) {
                 let items = [],//an array that have tags in a subject like ["ui/ux","html","css","js"]
                     data = {};//this object join subject and their tags to url
 
+
                 $(this).find(target.tagInTitleOfConditions).each(function () {
                     items.push($(this).text())
                 });
@@ -158,6 +166,7 @@ function getUrlDetails(url , target) {
                     subject: subject,
                     items: items
                 })
+
             })
             data = {
                 url: url,
@@ -197,4 +206,5 @@ function getUrlDetails(url , target) {
             jobModel.insertMany(final,
                 function () {});
         }) 
+
 }

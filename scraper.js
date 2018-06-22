@@ -87,7 +87,7 @@ function generateUrl(prefixUrl, pageNumberUrl, suffixUrl, urlTarget) {
 function startCrawler() {
     let page = 1;
 
-     while (page < 3) { //repeated<10
+     while (page < 10) { //repeated<10
 
         generateUrl("https://jobinja.ir/jobs?filters%5Bkeywords%5D%5B0%5D=&sort_by=published_at_desc&page=", page, "", "h3.c-jobListView__title > a.c-jobListView__titleLink")
 

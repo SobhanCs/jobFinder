@@ -26,7 +26,7 @@ var sources = {
             "logoOfCompany": ".c-companyHeader__logoImage",
             "description": ".o-box__text",
             "companyName": ".c-companyHeader__name",
-            "jobPerPage":15
+            "jobPerPage": 2
         },
         "lastCrawlDate": true,
         lastJobThatSortedByDate: ""
@@ -94,58 +94,36 @@ let jobModel = mongoose.model("jobModel", jobSchema, 'jobModel'); // the name of
 
 
 // generateUrl() crawl a page and output an array of links of the page. 
-function generateUrl(prefixUrl, pageNumberUrl, suffixUrl, urlTarget) {
+function generateUrl(url, target) {
 
     let urlsArray = [];
 
-    axios.get(prefixUrl + +pageNumberUrl + suffixUrl) // put a request to a url and get its html source
+    axios.get(url.prefix + url.page + url.suffix) // put a request to a url and get its html source
         .then(function (response) {
             $ = cheerio.load(response.data); // render received html source to can working it as a jquery syntax
             
-            console.log("pageNumber :  " + pageNumberUrl);
-
-            for (let item in $(urlTarget)) { // loop on all our target items
+            for (let item in $(target.linksOfJob)) { // loop on all our target items
                 if (Number.isInteger(+item)) { // filter only urls in page - urls' name are explicitly a number
-                    urlsArray.push($(urlTarget).eq(item).attr("href")); // read href attribute of tag 'a' and push it into output array
+                    urlsArray.push($(target.linksOfJob).eq(item).attr("href")); // read href attribute of tag 'a' and push it into output array
                 }
             }
+            target.jobPerPage = urlsArray.length
+            console.log("pageNumber :  " + url.page);
 
-            urlsArray.forEach(item => {
-                getUrlDetails(item, sources.jobinja.target)
-
-            });
-                
-            //getUrlDetails(urlsArray, sources.jobinja.target)
-                        
-
-             
+            console.log("number of jobs in this page is : " + target.jobPerPage);
             
-            // getUrlDetails(urlsArray,sources.jobinja.target)
-        //})
-            if(sources.jobinja.url.page < 19){
-                sources.jobinja.url.page++;
-                generateUrl(sources.jobinja.url.prefix, sources.jobinja.url.page, sources.jobinja.url.suffix, sources.jobinja.target.linksOfJob)
-
-            }
-            
+            getUrlDetails(url , urlsArray , sources.jobinja.target)
+     
         })
-        // .then(function () {
-        //     if(sources.jobinja.url.page < 19){
-        //         sources.jobinja.url.page++;
-        //         generateUrl(sources.jobinja.url.prefix, sources.jobinja.url.page, sources.jobinja.url.suffix, sources.jobinja.target.linksOfJob)
-
-        //     }
-        // })
-
 }
 
-generateUrl(sources.jobinja.url.prefix, sources.jobinja.url.page, sources.jobinja.url.suffix, sources.jobinja.target.linksOfJob)
+generateUrl(sources.jobinja.url, sources.jobinja.target)
 
-//var index = 0;
+var index = 0;
 //this function get a link that is a new job ,this job need to reed data and target help us for select any items in detail
-function getUrlDetails(url, target) {
+function getUrlDetails(object , urls , target) {
     
-    //let url = urls[index];
+    let url = urls[index];
     
     axios.get(url) //axios make request and get data of detail page
         .then(function (response) {
@@ -216,7 +194,6 @@ function getUrlDetails(url, target) {
                     }
                 })
 
-
             })
             // console.log(final);
 
@@ -224,15 +201,21 @@ function getUrlDetails(url, target) {
             //log finall and add to database - final is an object of a job
             jobModel.insertMany(final,
                 function () {
-                    // console.log("job state : " + index);
                 });
+               
+                index ++;
+                console.log("job state " + index + " done !");
+            if(index < target.jobPerPage){
+                getUrlDetails(object,urls,sources.jobinja.target)
+            }else{
+                index = 0;
+                console.log("----------------------------------");
 
-            // if(index < target.jobPerPage){
-            //     index ++;
-            //     getUrlDetails(urls,sources.jobinja.target)
-            // }else{
-            //     index = 0;
-            // }
+                if(object.page  < 157){ 
+                    object.page ++;
+                    generateUrl(sources.jobinja.url, sources.jobinja.target)
+                }       
+            }
         })
 
 }

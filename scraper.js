@@ -7,8 +7,7 @@ const fs = require("fs");
 const axios = require("axios");
 
 //global variables
-let $, repeated = 0,
-    i = 0;
+let $, repeated = 0;
 
 var sources = {
     "jobinja": {
@@ -26,7 +25,8 @@ var sources = {
             "expireDate": ".u-textCenter.u-textSmall.u-mB0 b",
             "logoOfCompany": ".c-companyHeader__logoImage",
             "description": ".o-box__text",
-            "companyName": ".c-companyHeader__name"
+            "companyName": ".c-companyHeader__name",
+            "jobPerPage":15
         },
         "lastCrawlDate": true,
         lastJobThatSortedByDate: ""
@@ -95,7 +95,9 @@ let jobModel = mongoose.model("jobModel", jobSchema, 'jobModel'); // the name of
 
 // generateUrl() crawl a page and output an array of links of the page. 
 function generateUrl(prefixUrl, pageNumberUrl, suffixUrl, urlTarget) {
+
     let urlsArray = [];
+
     axios.get(prefixUrl + +pageNumberUrl + suffixUrl) // put a request to a url and get its html source
         .then(function (response) {
             $ = cheerio.load(response.data); // render received html source to can working it as a jquery syntax
@@ -112,6 +114,13 @@ function generateUrl(prefixUrl, pageNumberUrl, suffixUrl, urlTarget) {
                 getUrlDetails(item, sources.jobinja.target)
 
             });
+                
+            //getUrlDetails(urlsArray, sources.jobinja.target)
+                        
+
+             
+            
+            // getUrlDetails(urlsArray,sources.jobinja.target)
         //})
             if(sources.jobinja.url.page < 19){
                 sources.jobinja.url.page++;
@@ -120,15 +129,24 @@ function generateUrl(prefixUrl, pageNumberUrl, suffixUrl, urlTarget) {
             }
             
         })
-        //.then(function () {
+        // .then(function () {
+        //     if(sources.jobinja.url.page < 19){
+        //         sources.jobinja.url.page++;
+        //         generateUrl(sources.jobinja.url.prefix, sources.jobinja.url.page, sources.jobinja.url.suffix, sources.jobinja.target.linksOfJob)
+
+        //     }
+        // })
 
 }
 
 generateUrl(sources.jobinja.url.prefix, sources.jobinja.url.page, sources.jobinja.url.suffix, sources.jobinja.target.linksOfJob)
 
-
+//var index = 0;
 //this function get a link that is a new job ,this job need to reed data and target help us for select any items in detail
 function getUrlDetails(url, target) {
+    
+    //let url = urls[index];
+    
     axios.get(url) //axios make request and get data of detail page
         .then(function (response) {
             $ = cheerio.load(response.data) //cherio get data from axios and help us to select objects in html source like jquery
@@ -174,15 +192,16 @@ function getUrlDetails(url, target) {
             //we make relation array to convert lang :D get titles from site and make field in database
             relation = [
                 ["عنوان", "title"],
-                ["دسته بندی شغلی", "typeOfJob"],
+                ["دسته‌بندی شغلی", "typeOfJob"],
                 ["موقعیت مکانی", "location"],
                 ["نوع همکاری", "typeOfCollabration"],
                 ["حقوق", "Salary"],
                 ["وضعیت نظام وظیفه", "militeryService"],
-                ["مهارت های مورد نیاز", "skill"],
+                ["مهارت‌های مورد نیاز", "skill"],
                 ["جنسیت", "sex"],
                 ["رشته‌های تحصیلی مرتبط", "relativeField"],
                 ["حداقل مدرک تحصیلی", "education"],
+                ["حداقل سابقه کار", "minExperience"]
             ];
 
             data["preRequire"].forEach(function (dataElement) {
@@ -205,8 +224,15 @@ function getUrlDetails(url, target) {
             //log finall and add to database - final is an object of a job
             jobModel.insertMany(final,
                 function () {
-                    // console.log(i);
+                    // console.log("job state : " + index);
                 });
+
+            // if(index < target.jobPerPage){
+            //     index ++;
+            //     getUrlDetails(urls,sources.jobinja.target)
+            // }else{
+            //     index = 0;
+            // }
         })
 
 }

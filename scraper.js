@@ -108,9 +108,9 @@ function generateUrl(url, target) {
                 }
             }
             target.jobPerPage = urlsArray.length
-            console.log("pageNumber :  " + url.page);
+            // console.log("pageNumber :  " + url.page);
 
-            console.log("number of jobs in this page is : " + target.jobPerPage);
+            console.log("\nStart crawling " + target.jobPerPage + " jobs from page " + url.page + " ... ");
             
             getUrlDetails(url , urlsArray , sources.jobinja.target)
      
@@ -204,7 +204,7 @@ function getUrlDetails(object , urls , target) {
                 });
                
                 index ++;
-                console.log("job state " + index + " done !");
+                console.log( index + "th job successfully crawled !");
             if(index < target.jobPerPage){
                 getUrlDetails(object,urls,sources.jobinja.target)
             }else{

@@ -98,5 +98,17 @@ nav .brand-logo {
 }
 
 .btnSearch:hover {
-    color: #ce3331 !important;
+    color: #E53935 !important;
+}
+
+aside section {
+    margin: 7px 0;
+}
+
+aside .btn-large {
+    background-color: #E53935;
+}
+
+aside .btn-large:hover {
+    background-color: #E53935;
 }

@@ -14,7 +14,7 @@
 
 <body dir="rtl">
     <header class="">
-        <nav class="grey lighten-4">
+        <nav class="grey lighten-3">
             <div class="nav-wrapper valign-wrapper">
                 <a href="#" data-target="mobile-demo" class="sidenav-trigger right grey-text text-darken-1">
                     <i class="material-icons large">menu</i>
@@ -77,19 +77,178 @@
             </li>
         </ul>
     </header>
-    <main class="white">
+    <main class="white lighten-4">
         <div class="row">
             <aside class="col s3 right">
-                <section>
+                 <section>
                     <a class="waves-effect waves-light waves-block btn btn-large">
                         <i class="material-icons left">filter_list</i>فیلتر کن</a>
                 </section>
-                <section>
-                    aside row2
-                </section>
+                <!-- <section>
+                    <section class="switch">
+                        <label>
+                            فقط فرصت‌های زمان‌دار
+                            <input type="checkbox">
+                            <span class="lever"></span>
+                            همه فرصت‌ها
+                        </label>
+                    </section>
+                </section> -->
+                <ul class="collapsible  expandable">
+                    <li>
+                        <div class="collapsible-header">
+                            <a class="waves-effect waves-light waves-block btn btn-large">
+                                <i class="material-icons left">filter_list</i>فیلتر کن</a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="collapsible-header right-align">
+                                <form action="#">
+                                        <p>
+                                          <label>
+                                            <input name="group1" type="radio" checked />
+                                            <span>قرمز</span>
+                                          </label>
+                                        </p>
+                                        <p>
+                                          <label>
+                                            <input name="group1" type="radio" />
+                                            <span>Yellow</span>
+                                          </label>
+                                        </p>
+                                        <p>
+                                          <label>
+                                            <input class="with-gap" name="group1" type="radio"  />
+                                            <span>Green</span>
+                                          </label>
+                                        </p>
+                                        <p>
+                                          <label>
+                                            <input name="group1" type="radio" disabled="disabled" />
+                                            <span>Brown</span>
+                                          </label>
+                                        </p>
+                                      </form>
+                        </div>
+                        <div class="collapsible-body">
+                            <span>Lorem ipsum dolor sit amet.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="collapsible-header">
+                            <i class="material-icons">whatshot</i>Third</div>
+                        <div class="collapsible-body">
+                            <span>Lorem ipsum dolor sit amet.</span>
+                        </div>
+                    </li>
+                </ul>
             </aside>
             <section class="col s9">
-                <div class="card horizontal">
+                <header>
+                    <nav>
+                        <div class="nav-wrapper">
+                            <div class="col s12">
+                                <a href="#!" class="breadcrumb">دسته اول</a>
+                                <a href="#!" class="breadcrumb">زیر دسته اول</a>
+                                <a href="#!" class="breadcrumb">مورد اول</a>
+                            </div>
+                        </div>
+                    </nav>
+                </header>
+                <br>
+                <div class="card horizontal hoverable">
+                    <div class="card-image waves-effect waves-block waves-light">
+                        <img class="" src="../public/img/companies_logo_128x128.jpg">
+                    </div>
+                    <div class="card-stacked">
+                        <div class="card-content">
+                            <span class="activator card-title grey-text text-darken-4">برنامه‌نویس موبایل(Android &amp; iOS)
+                                <i class="material-icons left small">more_vert</i>
+                            </span>
+                            <ul class="grey-text text-darken-4">
+                                <li class="valign-wrapper">
+                                    <i class="material-icons tiny">location_city</i>
+                                    دانش آتیه معماری و ساخت | Domus
+                                </li>
+                                <li class="valign-wrapper">
+                                    <i class="material-icons tiny">location_on</i>
+                                    تهران، تهران
+                                </li>
+                                <li class="valign-wrapper">
+                                    <i class="material-icons tiny">description</i>
+                                    قرارداد تمام‌وقت
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-reveal">
+                        <span class="card-title grey-text text-darken-4">
+                            <i class="material-icons left small">close</i>
+                        </span>
+                        <ul class="grey-text text-darken-4">
+                            <li class="valign-wrapper">
+                                <i class="material-icons">location_city</i>
+                                <span class="chip">تگ یک</span>
+                                <span class="chip">کاریابی</span>
+                                <span class="chip">تربچه</span>
+                            </li>
+                            <li class="valign-wrapper">
+                                <i class="material-icons">location_on</i>
+                                تهران، تهران
+                            </li>
+                            <li class="valign-wrapper">
+                                <i class="material-icons">description</i>
+                                قرارداد تمام‌وقت
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card horizontal hoverable">
+                    <div class="card-image waves-effect waves-block waves-light">
+                        <img class="" src="../public/img/companies_logo_128x128.jpg">
+                    </div>
+                    <div class="card-stacked">
+                        <div class="card-content">
+                            <span class="activator card-title grey-text text-darken-4">برنامه‌نویس موبایل(Android &amp; iOS)
+                                <i class="material-icons left small">more_vert</i>
+                            </span>
+                            <ul class="grey-text text-darken-4">
+                                <li class="valign-wrapper">
+                                    <i class="material-icons tiny">location_city</i>
+                                    دانش آتیه معماری و ساخت | Domus
+                                </li>
+                                <li class="valign-wrapper">
+                                    <i class="material-icons tiny">location_on</i>
+                                    تهران، تهران
+                                </li>
+                                <li class="valign-wrapper">
+                                    <i class="material-icons tiny">description</i>
+                                    قرارداد تمام‌وقت
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- <div class="card-action left-align">
+                                <a href="#" class="btn-flat waves-effect">This is a link</a>
+                            </div> -->
+                    </div>
+                    <div class="card-reveal">
+                        <span class="card-title grey-text text-darken-4">
+                            <i class="material-icons left small">close</i>
+                        </span>
+                        <p class="grey-text text-darken-4">
+                            <i class="material-icons">location_city</i>
+                            دانش آتیه معماری و ساخت | Domus
+                            <br>
+                            <i class="material-icons">location_on</i>
+                            تهران، تهران
+                            <br>
+                            <i class="material-icons">description</i>
+                            قرارداد تمام‌وقت
+                        </p>
+                        <!-- <p>Here is some more information about this product that is only revealed once clicked on.</p> -->
+                    </div>
+                </div>
+                <div class="card horizontal hoverable">
                     <div class="card-image waves-effect waves-block waves-light">
                         <img class="" src="../public/img/companies_logo_128x128.jpg">
                     </div>
@@ -98,42 +257,210 @@
                             <span class="activator card-title grey-text text-darken-4">برنامه‌نویس موبایل(Android &amp; iOS)
                                 <i class="material-icons left">more_horizon</i>
                             </span>
-                            <p class="grey-text text-darken-4">دانش آتیه معماری و ساخت | Domus
-                                    <i class="material-icons right">location_city</i><br>
+                            <ul class="grey-text text-darken-4">
+                                <li class="valign-wrapper">
+                                    <i class="material-icons tiny">location_city</i>
+                                    دانش آتیه معماری و ساخت | Domus
+                                </li>
+                                <li class="valign-wrapper">
+                                    <i class="material-icons tiny">location_on</i>
                                     تهران، تهران
-                                    <i class="material-icons right">location_on</i><br>
+                                </li>
+                                <li class="valign-wrapper">
+                                    <i class="material-icons tiny">description</i>
                                     قرارداد تمام‌وقت
-                                    <i class="material-icons right">description</i>
-                            </p>
-                            
-                            <!-- <h5 class="grey-text text-darken-4">برنامه‌نویس موبایل(Android &amp; iOS)</h5>
-                            <p class="grey-text text-darken-4">دانش آتیه معماری و ساخت | Domus
-                                <i class="material-icons right">location_city</i><br>
-                                تهران، تهران
-                                <i class="material-icons right">location_on</i>
-                                قرارداد تمام‌وقت
-                                <i class="material-icons right">description</i>
-                            </p>
-                            <li class="grey-text text-darken-4">تهران، تهران
-                                <i class="material-icons right">location_on</i>
-                            </li>
-                            <li class="grey-text text-darken-4">قرارداد تمام‌وقت
-                                <i class="material-icons right">description</i>
-                            </li> -->
+                                </li>
+                            </ul>
+
                         </div>
-                        <div class="card-action left-align">
-                            <a href="#" class="btn-flat waves-effect">This is a link</a>
-                        </div>
+                        <!-- <div class="card-action left-align">
+                                    <a href="#" class="btn-flat waves-effect">This is a link</a>
+                                </div> -->
                     </div>
                     <div class="card-reveal">
                         <span class="card-title grey-text text-darken-4">Card Title
                             <i class="material-icons left">close</i>
                         </span>
-                        <p>Here is some more information about this product that is only revealed once clicked on.</p>
+                        <p class="grey-text text-darken-4">
+                            <i class="material-icons">location_city</i>
+                            دانش آتیه معماری و ساخت | Domus
+                            <br>
+                            <i class="material-icons">location_on</i>
+                            تهران، تهران
+                            <br>
+                            <i class="material-icons">description</i>
+                            قرارداد تمام‌وقت
+                        </p>
+                        <!-- <p>Here is some more information about this product that is only revealed once clicked on.</p> -->
                     </div>
                 </div>
-            </section>
-        </div>
+                <div class="card horizontal hoverable">
+                    <div class="card-image waves-effect waves-block waves-light">
+                        <img class="" src="../public/img/companies_logo_128x128.jpg">
+                    </div>
+                    <div class="card-stacked">
+                        <div class="card-content">
+                            <span class="activator card-title grey-text text-darken-4">برنامه‌نویس موبایل(Android &amp; iOS)
+                                <i class="material-icons left">more_horizon</i>
+                            </span>
+                            <ul class="grey-text text-darken-4">
+                                <li class="valign-wrapper">
+                                    <i class="material-icons tiny">location_city</i>
+                                    دانش آتیه معماری و ساخت | Domus
+                                </li>
+                                <li class="valign-wrapper">
+                                    <i class="material-icons tiny">location_on</i>
+                                    تهران، تهران
+                                </li>
+                                <li class="valign-wrapper">
+                                    <i class="material-icons tiny">description</i>
+                                    قرارداد تمام‌وقت
+                                </li>
+                            </ul>
+
+                        </div>
+                        <!-- <div class="card-action left-align">
+                                        <a href="#" class="btn-flat waves-effect">This is a link</a>
+                                    </div> -->
+                    </div>
+                    <div class="card-reveal">
+                        <span class="card-title grey-text text-darken-4">Card Title
+                            <i class="material-icons left">close</i>
+                        </span>
+                        <p class="grey-text text-darken-4">
+                            <i class="material-icons">location_city</i>
+                            دانش آتیه معماری و ساخت | Domus
+                            <br>
+                            <i class="material-icons">location_on</i>
+                            تهران، تهران
+                            <br>
+                            <i class="material-icons">description</i>
+                            قرارداد تمام‌وقت
+                        </p>
+                        <!-- <p>Here is some more information about this product that is only revealed once clicked on.</p> -->
+                    </div>
+                </div>
+                <div class="card horizontal hoverable">
+                    <div class="card-image waves-effect waves-block waves-light">
+                        <img class="" src="../public/img/companies_logo_128x128.jpg">
+                    </div>
+                    <div class="card-stacked">
+                        <div class="card-content">
+                            <span class="activator card-title grey-text text-darken-4">برنامه‌نویس موبایل(Android &amp; iOS)
+                                <i class="material-icons left">more_horizon</i>
+                            </span>
+                            <ul class="grey-text text-darken-4">
+                                <li class="valign-wrapper">
+                                    <i class="material-icons tiny">location_city</i>
+                                    دانش آتیه معماری و ساخت | Domus
+                                </li>
+                                <li class="valign-wrapper">
+                                    <i class="material-icons tiny">location_on</i>
+                                    تهران، تهران
+                                </li>
+                                <li class="valign-wrapper">
+                                    <i class="material-icons tiny">description</i>
+                                    قرارداد تمام‌وقت
+                                </li>
+                            </ul>
+
+                        </div>
+                        <!-- <div class="card-action left-align">
+                                            <a href="#" class="btn-flat waves-effect">This is a link</a>
+                                        </div> -->
+                    </div>
+                    <div class="card-reveal">
+                        <span class="card-title grey-text text-darken-4">Card Title
+                            <i class="material-icons left">close</i>
+                        </span>
+                        <p class="grey-text text-darken-4">
+                            <i class="material-icons">location_city</i>
+                            دانش آتیه معماری و ساخت | Domus
+                            <br>
+                            <i class="material-icons">location_on</i>
+                            تهران، تهران
+                            <br>
+                            <i class="material-icons">description</i>
+                            قرارداد تمام‌وقت
+                        </p>
+                        <!-- <p>Here is some more information about this product that is only revealed once clicked on.</p> -->
+                    </div>
+                </div>
+                <div class="card horizontal hoverable">
+                    <div class="card-image waves-effect waves-block waves-light">
+                        <img class="" src="../public/img/companies_logo_128x128.jpg">
+                    </div>
+                    <div class="card-stacked">
+                        <div class="card-content">
+                            <span class="activator card-title grey-text text-darken-4">برنامه‌نویس موبایل(Android &amp; iOS)
+                                <i class="material-icons left">more_horizon</i>
+                            </span>
+                            <ul class="grey-text text-darken-4">
+                                <li class="valign-wrapper">
+                                    <i class="material-icons tiny">location_city</i>
+                                    دانش آتیه معماری و ساخت | Domus
+                                </li>
+                                <li class="valign-wrapper">
+                                    <i class="material-icons tiny">location_on</i>
+                                    تهران، تهران
+                                </li>
+                                <li class="valign-wrapper">
+                                    <i class="material-icons tiny">description</i>
+                                    قرارداد تمام‌وقت
+                                </li>
+                            </ul>
+
+                        </div>
+                        <!-- <div class="card-action left-align">
+                                                <a href="#" class="btn-flat waves-effect">This is a link</a>
+                                            </div> -->
+                    </div>
+                    <div class="card-reveal">
+                        <span class="card-title grey-text text-darken-4">Card Title
+                            <i class="material-icons left">close</i>
+                        </span>
+                        <p class="grey-text text-darken-4">
+                            <i class="material-icons">location_city</i>
+                            دانش آتیه معماری و ساخت | Domus
+                            <br>
+                            <i class="material-icons">location_on</i>
+                            تهران، تهران
+                            <br>
+                            <i class="material-icons">description</i>
+                            قرارداد تمام‌وقت
+                        </p>
+                        <!-- <p>Here is some more information about this product that is only revealed once clicked on.</p> -->
+                    </div>
+                </div>
+                <footer>
+                    <ul class="pagination">
+                        <li class="disabled">
+                            <a href="#!">
+                                <i class="material-icons">chevron_right</i>
+                            </a>
+                        </li>
+                        <li class="active">
+                            <a href="#!">1</a>
+                        </li>
+                        <li class="waves-effect">
+                            <a href="#!">2</a>
+                        </li>
+                        <li class="waves-effect">
+                            <a href="#!">3</a>
+                        </li>
+                        <li class="waves-effect">
+                            <a href="#!">4</a>
+                        </li>
+                        <li class="waves-effect">
+                            <a href="#!">5</a>
+                        </li>
+                        <li class="waves-effect">
+                            <a href="#!">
+                                <i class="material-icons">chevron_left</i>
+                            </a>
+                        </li>
+                    </ul>
+                </footer>
     </main>
     <footer>
 

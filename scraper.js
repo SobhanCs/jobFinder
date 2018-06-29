@@ -1,5 +1,5 @@
 //Crawler to scrap the job websites sources
-
+// "use strict";
 //requires
 const mongoose = require("mongoose");
 const cheerio = require('cheerio');

@@ -99,6 +99,7 @@ function generateUrl(url, target) {
     let urlsArray = [];
 
     axios.get(url.prefix + url.page + url.suffix) // put a request to a url and get its html source
+  
         .then(function (response) {
             $ = cheerio.load(response.data); // render received html source to can working it as a jquery syntax
             
@@ -110,7 +111,9 @@ function generateUrl(url, target) {
             target.jobPerPage = urlsArray.length
             // console.log("pageNumber :  " + url.page);
 
+
             console.log("\nStart crawling " + target.jobPerPage + " jobs from page " + url.page + " ... ");
+
             
             getUrlDetails(url , urlsArray , sources.jobinja.target)
      
@@ -129,10 +132,12 @@ function getUrlDetails(object , urls , target) {
         .then(function (response) {
             $ = cheerio.load(response.data) //cherio get data from axios and help us to select objects in html source like jquery
 
+
             let subject = ""; //subject like : ...جنسیت و حداقل مدرک و حقوق و 
 
             let dataOfThisLi = []; //a array that have ["جنسیت","مرد"]
             
+
             let final = { //finall is an object that will append to data base
                 url: url,
                 id: "our detail url",
@@ -192,10 +197,13 @@ function getUrlDetails(object , urls , target) {
                     if (item[0] == dataElement.subject) {
                         final[item[1]] = thisItems; //add other field and data to finall 
                     }
+                    
                 })
 
             })
+
             // console.log(final);
+
 
             // i++;
             //log finall and add to database - final is an object of a job

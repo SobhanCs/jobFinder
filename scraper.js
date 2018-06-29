@@ -34,7 +34,7 @@ var sources = {
 }
 
 // crawler start
-console.log("Crawler started...");
+console.log("\nCrawler started...");
 
 // Connect to MongoDB
 mongoose.connect("mongodb://localhost:27017/jobteam");

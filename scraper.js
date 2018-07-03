@@ -1,16 +1,47 @@
 //Crawler to scrap the job websites sources
 
 //requires
+const express = require("express");
+const app = express();
+app.set('view engine', 'ejs');
+app.use(express.static(__dirname + "/scraper/public"));
+app.listen(8080);
+
+const bodyParser = require('body-parser')
+app.use(bodyParser.json());
+
 const mongoose = require("mongoose");
 const cheerio = require('cheerio');
 const fs = require("fs");
 const axios = require("axios");
 
 //global variables
-let $, repeated = 0;
+let $, repeated = 0,
+    json = {};
 
 var sources = {
     "jobinja": {
+        "url": {
+            "prefix": "https://jobinja.ir/jobs?filters%5Bkeywords%5D%5B0%5D=&sort_by=published_at_desc&page=",
+            "suffix": "",
+            "page": 1
+        },
+        "target": {
+            "subject": ".c-jobView__titleText",
+            "linksOfJob": "h3.c-jobListView__title > a.c-jobListView__titleLink",
+            "conditions": "li.c-infoBox__item",
+            "titleOfConditions": ".c-infoBox__itemTitle",
+            "tagInTitleOfConditions": ".black",
+            "expireDate": ".u-textCenter.u-textSmall.u-mB0 b",
+            "logoOfCompany": ".c-companyHeader__logoImage",
+            "description": ".o-box__text",
+            "companyName": ".c-companyHeader__name",
+            "jobPerPage": 15
+        },
+        "lastCrawlDate": true,
+        lastJobThatSortedByDate: ""
+    },
+    "jobvision": {
         "url": {
             "prefix": "https://jobinja.ir/jobs?filters%5Bkeywords%5D%5B0%5D=&sort_by=published_at_desc&page=",
             "suffix": "",
@@ -101,7 +132,7 @@ function generateUrl(url, target) {
     axios.get(url.prefix + url.page + url.suffix) // put a request to a url and get its html source
         .then(function (response) {
             $ = cheerio.load(response.data); // render received html source to can working it as a jquery syntax
-            
+
             for (let item in $(target.linksOfJob)) { // loop on all our target items
                 if (Number.isInteger(+item)) { // filter only urls in page - urls' name are explicitly a number
                     urlsArray.push($(target.linksOfJob).eq(item).attr("href")); // read href attribute of tag 'a' and push it into output array
@@ -111,9 +142,9 @@ function generateUrl(url, target) {
             console.log("pageNumber :  " + url.page);
 
             console.log("number of jobs in this page is : " + target.jobPerPage);
-            
-            getUrlDetails(url , urlsArray , sources.jobinja.target)
-     
+
+            getUrlDetails(url, urlsArray, sources.jobinja.target)
+
         })
 }
 
@@ -121,10 +152,10 @@ generateUrl(sources.jobinja.url, sources.jobinja.target)
 
 var index = 0;
 //this function get a link that is a new job ,this job need to reed data and target help us for select any items in detail
-function getUrlDetails(object , urls , target) {
-    
+function getUrlDetails(object, urls, target) {
+
     let url = urls[index];
-    
+
     axios.get(url) //axios make request and get data of detail page
         .then(function (response) {
             $ = cheerio.load(response.data) //cherio get data from axios and help us to select objects in html source like jquery
@@ -132,16 +163,17 @@ function getUrlDetails(object , urls , target) {
             let subject = ""; //subject like : ...جنسیت و حداقل مدرک و حقوق و 
 
             let dataOfThisLi = []; //a array that have ["جنسیت","مرد"]
-            
+
             let final = { //finall is an object that will append to data base
                 url: url,
                 id: "our detail url",
                 crawlTime: repeated,
                 expireTime: $(target.expire).text().replace(/ روز/g, ''),
-                description: $(target.description).text(),
+                descriptionOfJob: $(target.description).eq(0).text().trim().replace(/  /g, ''),
+                descriptionOfCompany: $(target.description).eq(1).text().trim().replace(/  /g, ''),
                 logoSource: $(target.logoOfCompany).attr("src"),
-                companyName: $(target.companyName).text(),
-                title: $(target.subject).text().trim().replace(/استخدام/g, "")
+                companyName: $(target.companyName).text().trim().replace(/  /g, ''),
+                title: $(target.subject).text().trim().replace(/استخدام/g, "").trim().replace(/  /g, '')
             }
 
             $(target.conditions).each(function () {
@@ -199,23 +231,52 @@ function getUrlDetails(object , urls , target) {
 
             // i++;
             //log finall and add to database - final is an object of a job
-            jobModel.insertMany(final,
-                function () {
-                });
-               
-                index ++;
-                console.log("job state " + index + " done !");
-            if(index < target.jobPerPage){
-                getUrlDetails(object,urls,sources.jobinja.target)
-            }else{
+            // jobModel.insertMany(final,
+            //     function () {
+            //     });
+
+            index++;
+            json[index] = final;
+            console.log("job state " + index + " done !");
+            if (index < target.jobPerPage) {
+                getUrlDetails(object, urls, sources.jobinja.target)
+            } else {
                 index = 0;
                 console.log("----------------------------------");
 
-                if(object.page  < 157){ 
-                    object.page ++;
+                if (object.page < 1) {
+                    object.page++;
                     generateUrl(sources.jobinja.url, sources.jobinja.target)
-                }       
+                } else {
+                    console.log("scaper done!!");
+
+                }
             }
         })
 
 }
+app.get('/', function (req, res) {
+    console.log("");
+    res.render(__dirname + '/scraper/views/panel', {})
+});
+
+app.get('/news', function (req, res) {
+    console.log("ajaxCalled");
+
+    res.json(json)
+});
+
+app.post('/addNew', function (req, res) {
+    console.log("new job !!");
+    let newJob = JSON.stringify(req.body);
+    console.log(newJob);
+    res.redirect('/news');
+
+});
+
+app.post('/newArchive', function (req, res) {
+    console.log("new archive !!");
+    let newArchive = JSON.stringify(req.body);
+    console.log(newArchive);
+    res.redirect('/news');
+});

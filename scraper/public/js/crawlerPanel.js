@@ -5,7 +5,7 @@ $("#getnewJobs").on("click", function () {
     $.ajax({
         url: "/news",
         method: "get"
-    }).done(function (data) {
+    }).done(function (data) {        
         createNewJobs(data)
         outputJSON = data
     });
@@ -19,7 +19,7 @@ function createNewJobs(json) {
         $("#items").append(
             '<div class="col-12 p-3 text-right">' +
             '<div id = "jobId_' + index + '" class="shadow card text-white bg-secondary mb-3">' +
-            '<div class="card-header"><a class="btn btn-info" role="button" href="' + json[index].url + '" target="_blank"><p class="secondary ml-2 mb-0" style="float:right"> - ' + index + '</p><p style="float:right;vertical-align:middle;margin-bottom:0;">' + json[index].typeOfJob + '</p></a>' +
+            '<div class="card-header"><a class="btn btn-info" role="button" href="' + json[index].url + '" target="_blank"><p class="secondary ml-2 mb-0" style="float:right"> - ' + (+index+1) + '</p><p style="float:right;vertical-align:middle;margin-bottom:0;">' + json[index].typeOfJob + '</p></a>' +
             '<button onclick="addToArchive(' + index + ')" type="button" class="btn btn-danger mx-2 col-2" style="float:left">پنهان</button>' +
             '<button onclick="addToDatabase(' + index + ')" type="button" class="btn btn-success ml-3 col-3" style="float:left">تایید</button></div>' +
 
@@ -38,7 +38,7 @@ function createNewJobs(json) {
             '</div><div class="col-5"><h6 >نام شرکت</h6>' +
             '<p class = "card-text" >' + json[index].companyName + '</p>' +
             '<h6>نوع همکاری</h6>' +
-            '<p class = "card-text" >' + json[index].typeOfCollabration + '</p>' +
+            '<p class = "card-text" >' + json[index].typeOfCollaboration + '</p>' +
             '<h6>مهارت های مورد نیاز</h6>' +
             '<p class = "card-text" >' + json[index].skill + '</p>' +
             '<h6>جنسیت</h6>' +

@@ -17,7 +17,8 @@ const axios = require("axios");
 
 //global variables
 let $, repeated = 0,
-    json = {};
+    json = {},
+    news = 0;
 
 var sources = {
     "jobinja": {
@@ -36,10 +37,12 @@ var sources = {
             "logoOfCompany": ".c-companyHeader__logoImage",
             "description": ".o-box__text",
             "companyName": ".c-companyHeader__name",
-            "jobPerPage": 15
+            "jobPerPage": 15,
+            "logo": "https://jobinja.ir/assets/img/logo-gray.png"
         },
         "lastCrawlDate": true,
         lastJobThatSortedByDate: ""
+
     },
     "jobvision": {
         "url": {
@@ -91,8 +94,8 @@ let jobSchema = new mongoose.Schema({
     }, // use the link of job as id
     title: {
 
-        type: String
-        // require: true
+        type: String,
+        require: true
 
     },
     typeOfJob: String,
@@ -107,13 +110,12 @@ let jobSchema = new mongoose.Schema({
     sex: String,
     relativeField: [],
     education: [],
-    logo: String,
     companyName: {
         type: String,
         require: true
     },
     description: String,
-
+    logo: String,
     expireTime: String,
     crawlTime: String,
     experience: String,
@@ -168,14 +170,15 @@ function getUrlDetails(object, urls, target) {
             let final = { //finall is an object that will append to data base
                 url: url,
                 id: "our detail url",
-                visibility:"visible",
+                visibility: "visible",
                 crawlTime: repeated,
                 expireTime: $(target.expire).text().replace(/ روز/g, ''),
                 descriptionOfJob: $(target.description).eq(0).text().trim().replace(/  /g, ''),
                 descriptionOfCompany: $(target.description).eq(1).text().trim().replace(/  /g, ''),
                 logoSource: $(target.logoOfCompany).attr("src"),
                 companyName: $(target.companyName).text().trim().replace(/  /g, ''),
-                title: $(target.subject).text().trim().replace(/استخدام/g, "").trim().replace(/  /g, '')
+                title: $(target.subject).text().trim().replace(/استخدام/g, "").trim().replace(/  /g, ''),
+                logo: target.logo
             }
 
             $(target.conditions).each(function () {
@@ -206,7 +209,7 @@ function getUrlDetails(object, urls, target) {
                 ["عنوان", "title"],
                 ["دسته‌بندی شغلی", "typeOfJob"],
                 ["موقعیت مکانی", "location"],
-                ["نوع همکاری", "typeOfCollabration"],
+                ["نوع همکاری", "typeOfCollaboration"],
                 ["حقوق", "Salary"],
                 ["وضعیت نظام وظیفه", "militeryService"],
                 ["مهارت‌های مورد نیاز", "skill"],
@@ -232,33 +235,53 @@ function getUrlDetails(object, urls, target) {
             // console.log(final);
 
             //log finall and add to database - final is an object of a job
-            jobModel.insertMany(final,
-                function () {
-                });
+
 
             index++;
-            json[index] = final;
-            console.log("job state " + index + " done !");
-            if (index < target.jobPerPage) {
-                getUrlDetails(object, urls, sources.jobinja.target)
-            } else {
-                index = 0;
-                console.log("----------------------------------");
 
-                if (object.page < 1) {
-                    object.page++;
-                    generateUrl(sources.jobinja.url, sources.jobinja.target)
-                } else {
-                    console.log("scaper done!!");
 
-                }
-            }
+
+            jobModel.findOne({"url": final.url}, {"_id": 0,"url": 1}
+                ,function (err, item) {
+                    if (err) throw err
+
+                    if (item == null) {
+
+                        jobModel.insertMany(final,
+                            function () {})
+
+                        json[news] = final
+                        news++
+
+                        console.log("job state " + index + " done !");
+
+                        if (index < target.jobPerPage) {
+                            getUrlDetails(object, urls, sources.jobinja.target)
+                        } else {
+                            index = 0;
+                            console.log("----------------------------------");
+
+                            if (object.page < 200) {
+                                object.page++;
+                                generateUrl(sources.jobinja.url, sources.jobinja.target)
+                            } else {
+                                console.log("scaper done!!");
+                            }
+                        }
+
+                    } else {
+                        console.log("scaper done!!");
+                    }
+            })
+
         })
-
 }
+
 app.get('/', function (req, res) {
     console.log("");
-    res.render(__dirname + '/scraper/views/panel', {})
+    res.render(__dirname + '/scraper/views/panel', {
+        news: news
+    })
 });
 
 app.get('/news', function (req, res) {
@@ -268,17 +291,17 @@ app.get('/news', function (req, res) {
 });
 
 app.post('/addNew', function (req, res) {
-    console.log("new job !!");
+    console.log("new job visible");
     let newJob = JSON.stringify(req.body);
-    console.log(newJob);
-    res.redirect('/news');
 
+    res.redirect('/news');
 });
 
 app.post('/newArchive', function (req, res) {
-    console.log("new archive !!");
-    let newArchive = JSON.stringify(req.body);
+    console.log("new job hidden");
+    let newArchive = JSON.parse(JSON.stringify(req.body));
     newArchive.visibility = "hidden"
-    console.log(newArchive);
+    //need update to database
+    
     res.redirect('/news');
 });

@@ -86,8 +86,7 @@ let jobSchema = new mongoose.Schema({
     expireTime: String,
     crawlTime: String,
     experience: String,
-    logoSource: String,
-    companyName: String
+    logoSource: String
 });
 
 let jobModel = mongoose.model("jobModel", jobSchema, 'jobModel'); // the name of collection by erfan

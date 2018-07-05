@@ -101,14 +101,60 @@ nav .brand-logo {
     color: #E53935 !important;
 }
 
-aside section {
-    margin: 7px 0;
+main {
+    background-color: whitesmoke;
 }
 
-aside .btn-large {
-    background-color: #E53935;
+    .breadcrumb:before {
+        content: 'chevron_left';
+    }
+
+    main > div > aside {
+
+    }
+
+        main > div > aside .btn-large {
+            background-color: #E53935;
+        }
+
+        main > div > aside .btn-large:hover {
+            background-color: #E53935;
+        }
+
+        main > div > aside > section {
+            padding: 0 7px 15px;
+        }
+
+    main > div > section {
+        padding-left: 15% !important;
+        /* margin-left: 20px; */
+    }
+
+    main > .row > .col {
+        padding: 12px;
+    }
+
+    main section footer > .pagination {
+        /* display: block; */
+        margin: 20px 0 0;
+    }
+
+.card {
+    margin: 0 0 12px;
 }
 
-aside .btn-large:hover {
-    background-color: #E53935;
-}
+    .card img {
+        border: 1px solid rgb(245, 245, 245);
+        width: 100px;
+        height: 100px;
+        margin: 24px 24px 0 0;
+    }
+
+    .card i {
+        padding-bottom: 8px;
+        margin-left: 3px;
+    }
+
+    .card .card-content {
+        padding: 24px 24px 24px;
+    }

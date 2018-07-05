@@ -118,7 +118,8 @@ let jobSchema = new mongoose.Schema({
     crawlTime: String,
     experience: String,
     logoSource: String,
-    companyName: String
+    companyName: String,
+    visibility: String
 });
 
 let jobModel = mongoose.model("jobModel", jobSchema, 'jobModel'); // the name of collection by erfan
@@ -167,6 +168,7 @@ function getUrlDetails(object, urls, target) {
             let final = { //finall is an object that will append to data base
                 url: url,
                 id: "our detail url",
+                visibility:"visible",
                 crawlTime: repeated,
                 expireTime: $(target.expire).text().replace(/ روز/g, ''),
                 descriptionOfJob: $(target.description).eq(0).text().trim().replace(/  /g, ''),
@@ -229,11 +231,10 @@ function getUrlDetails(object, urls, target) {
             })
             // console.log(final);
 
-            // i++;
             //log finall and add to database - final is an object of a job
-            // jobModel.insertMany(final,
-            //     function () {
-            //     });
+            jobModel.insertMany(final,
+                function () {
+                });
 
             index++;
             json[index] = final;
@@ -277,6 +278,7 @@ app.post('/addNew', function (req, res) {
 app.post('/newArchive', function (req, res) {
     console.log("new archive !!");
     let newArchive = JSON.stringify(req.body);
+    newArchive.visibility = "hidden"
     console.log(newArchive);
     res.redirect('/news');
 });

@@ -38,7 +38,7 @@ var sources = {
             "description": ".o-box__text",
             "companyName": ".c-companyHeader__name",
             "jobPerPage": 15,
-            "logo": "https://jobinja.ir/assets/img/logo-gray.png"
+            "siteName": "jobinja"
         },
         "lastCrawlDate": true,
         lastJobThatSortedByDate: ""
@@ -60,10 +60,12 @@ var sources = {
             "logoOfCompany": ".c-companyHeader__logoImage",
             "description": ".o-box__text",
             "companyName": ".c-companyHeader__name",
-            "jobPerPage": 2
+            "jobPerPage": 15,
+            "siteName": "jobinja"
         },
         "lastCrawlDate": true,
         lastJobThatSortedByDate: ""
+
     }
 }
 
@@ -92,12 +94,7 @@ let jobSchema = new mongoose.Schema({
         type: String,
         require: true
     }, // use the link of job as id
-    title: {
-
-        type: String,
-        require: true
-
-    },
+    title: String,
     typeOfJob: String,
     location: String,
     typeOfCollaboration: String,
@@ -114,14 +111,16 @@ let jobSchema = new mongoose.Schema({
         type: String,
         require: true
     },
-    description: String,
-    logo: String,
+    descriptionOfJob: String,
+    descriptionOfCompany: String,
+    siteName: String,
     expireTime: String,
     crawlTime: String,
     experience: String,
     logoSource: String,
     companyName: String,
-    visibility: String
+    visibility: String,
+    minExperience:String
 });
 
 let jobModel = mongoose.model("jobModel", jobSchema, 'jobModel'); // the name of collection by erfan
@@ -132,9 +131,14 @@ function generateUrl(url, target) {
 
     let urlsArray = [];
 
-    axios.get(url.prefix + url.page + url.suffix) // put a request to a url and get its html source
+    axios.get(url.prefix + url.page + url.suffix  , {
+        validateStatus: function (status) {
+          return status < 500; // Reject only if the status code is greater than or equal to 500
+        }
+      })// put a request to a url and get its html source
         .then(function (response) {
             $ = cheerio.load(response.data); // render received html source to can working it as a jquery syntax
+            let statusCode = response.status
 
             for (let item in $(target.linksOfJob)) { // loop on all our target items
                 if (Number.isInteger(+item)) { // filter only urls in page - urls' name are explicitly a number
@@ -142,7 +146,7 @@ function generateUrl(url, target) {
                 }
             }
             target.jobPerPage = urlsArray.length
-            console.log("pageNumber :  " + url.page);
+            console.log("pageNumber :  " + url.page + " /  get with status code :" + statusCode);
 
             console.log("number of jobs in this page is : " + target.jobPerPage);
 
@@ -151,18 +155,24 @@ function generateUrl(url, target) {
         })
 }
 
+//main call
 generateUrl(sources.jobinja.url, sources.jobinja.target)
 
-var index = 0;
+var index = 0;//start crawl job with index
 //this function get a link that is a new job ,this job need to reed data and target help us for select any items in detail
 function getUrlDetails(object, urls, target) {
 
     let url = urls[index];
 
-    axios.get(url) //axios make request and get data of detail page
+    axios.get(url, {
+        validateStatus: function (status) {
+          return status < 500; // Reject only if the status code is greater than or equal to 500
+        }
+      }) //axios make request and get data of detail page
         .then(function (response) {
             $ = cheerio.load(response.data) //cherio get data from axios and help us to select objects in html source like jquery
-
+            let statusCode = response.status
+            
             let subject = ""; //subject like : ...جنسیت و حداقل مدرک و حقوق و 
 
             let dataOfThisLi = []; //a array that have ["جنسیت","مرد"]
@@ -170,15 +180,15 @@ function getUrlDetails(object, urls, target) {
             let final = { //finall is an object that will append to data base
                 url: url,
                 id: "our detail url",
-                visibility: "visible",
+                visibility: "NEW",
                 crawlTime: repeated,
                 expireTime: $(target.expire).text().replace(/ روز/g, ''),
                 descriptionOfJob: $(target.description).eq(0).text().trim().replace(/  /g, ''),
                 descriptionOfCompany: $(target.description).eq(1).text().trim().replace(/  /g, ''),
                 logoSource: $(target.logoOfCompany).attr("src"),
                 companyName: $(target.companyName).text().trim().replace(/  /g, ''),
-                title: $(target.subject).text().trim().replace(/استخدام/g, "").trim().replace(/  /g, ''),
-                logo: target.logo
+                title: $(target.subject).text().trim().replace(/استخدام/g, "").trim().replace(/  /g, ' '),
+                siteName: target.siteName
             }
 
             $(target.conditions).each(function () {
@@ -206,7 +216,6 @@ function getUrlDetails(object, urls, target) {
 
             //we make relation array to convert lang :D get titles from site and make field in database
             relation = [
-                ["عنوان", "title"],
                 ["دسته‌بندی شغلی", "typeOfJob"],
                 ["موقعیت مکانی", "location"],
                 ["نوع همکاری", "typeOfCollaboration"],
@@ -243,9 +252,11 @@ function getUrlDetails(object, urls, target) {
 
             jobModel.findOne({"url": final.url}, {"_id": 0,"url": 1}
                 ,function (err, item) {
-                    if (err) throw err
+                    if (err) {
+                        console.log(">>>>>>>>>>>>>>>>>>>>>>> Database Error: cant find url of undefined " + err);      
+                    }
 
-                    if (item == null) {
+                    if (item == null && statusCode==200) {
 
                         jobModel.insertMany(final,
                             function () {})
@@ -253,7 +264,7 @@ function getUrlDetails(object, urls, target) {
                         json[news] = final
                         news++
 
-                        console.log("job state " + index + " done !");
+                        console.log("job state " + index + " added !  /  with status code : " + statusCode);
 
                         if (index < target.jobPerPage) {
                             getUrlDetails(object, urls, sources.jobinja.target)
@@ -270,38 +281,70 @@ function getUrlDetails(object, urls, target) {
                         }
 
                     } else {
-                        console.log("scaper done!!");
+                        repeated++;
+                        console.log("repeted job!!  --> " + repeated);  
+                        if (repeated < 5) {//limitForRepeated
+                            getUrlDetails(object, urls, sources.jobinja.target)
+                        }else{
+                            console.log("can not find new job ! ;)");
+                            
+                        }
                     }
             })
+            .catch(function (error) {
+                // handle error
+                console.log(error);
+              })
 
-        })
+    })
 }
 
 app.get('/', function (req, res) {
-    console.log("");
-    res.render(__dirname + '/scraper/views/panel', {
-        news: news
+
+    jobModel.find({"visibility":"NEW"}).count(function(err,result){
+        if (err)
+            console.log(">>>>>>>>>>>>>>>>>>>>>>> Database Error: cant find url of undefined " + err);      
+        
+        res.render(__dirname + '/scraper/views/panel', {
+            news: result
+        })
     })
 });
 
 app.get('/news', function (req, res) {
-    console.log("ajaxCalled");
+    jobModel.find({"visibility":"NEW"},function(err,json){
+        if (err)
+            console.log(">>>>>>>>>>>>>>>>>>>>>>> Database Error: cant find url of undefined " + err);      
 
-    res.json(json)
+        res.json(json)
+
+    })
 });
 
 app.post('/addNew', function (req, res) {
     console.log("new job visible");
-    let newJob = JSON.stringify(req.body);
+    let newJob = JSON.parse(JSON.stringify(req.body));
 
+    jobModel.update({"url":newJob.url},{$set:{"visibility":"visible"}},function(err,item){
+        if(err)
+
+        console.log(item);
+        
+    })
+   
     res.redirect('/news');
 });
 
 app.post('/newArchive', function (req, res) {
     console.log("new job hidden");
     let newArchive = JSON.parse(JSON.stringify(req.body));
-    newArchive.visibility = "hidden"
-    //need update to database
-    
+
+    jobModel.update({"url":newArchive.url},{$set:{"visibility":"hidden"}},function(err,item){
+        if(err)
+
+        console.log(item);
+        
+    })
+
     res.redirect('/news');
 });

@@ -30,7 +30,8 @@ var jobSchema = new mongoose.Schema({
         type: String,
         require: true
     },
-    description: String,
+    descriptionOfJob: String,
+    descriptionOfCompany: String,
     expireTime: String,
     crawlTime: String,
     experience: String,

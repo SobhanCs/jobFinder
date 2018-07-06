@@ -10,7 +10,7 @@ var jobModel = require('./app/models/jobModel');
 
 // set the view engine to ejs
 app.set('view engine', 'ejs');
-// app.set('views', 'views');
+app.set('views', 'views');
 app.use(express.static(__dirname + '/public'));
 
 app.use(morgan('dev'));

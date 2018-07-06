@@ -15,8 +15,6 @@ const cheerio = require('cheerio');
 const fs = require("fs");
 const axios = require("axios");
 
-const jobModel = require('./app/models/jobModel'); // the name of collection by erfan
-
 
 //global variables
 let $, repeated = 0,
@@ -85,6 +83,8 @@ db.once('connected', function () {
     console.log("We are connected to MongoDB !");
 });
 
+const jobModel = require('./app/models/jobModel'); // the name of collection by erfan
+
 // generateUrl() crawl a page and output an array of links of the page. 
 function generateUrl(url, target) {
 
@@ -129,7 +129,7 @@ function getUrlDetails(object, urls, target) {
                 url: url,
                 id: "our detail url",
                 visibility: "visible",
-                crawlTime: repeated,
+                crawlTime: new Date().toJSON(),
                 expireTime: $(target.expire).text().replace(/ روز/g, ''),
                 descriptionOfJob: $(target.description).eq(0).text().trim().replace(/  /g, ''),
                 descriptionOfCompany: $(target.description).eq(1).text().trim().replace(/  /g, ''),
@@ -239,7 +239,7 @@ app.get('/', function (req, res) {
     console.log("");
     res.render(__dirname + '/scraper/views/panel', {
         news: news
-    })
+    });
 });
 
 app.get('/news', function (req, res) {

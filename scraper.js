@@ -237,13 +237,9 @@ function getUrlDetails(object, urls, target) {
 
 app.get('/', function (req, res) {
     console.log("");
-<<<<<<< HEAD
+
     res.render(__dirname + '/views/panel', {})
-=======
-    res.render(__dirname + '/scraper/views/panel', {
-        news: news
-    })
->>>>>>> c245585ad6aba69298c45a181dc12e24f089f5b7
+
 });
 
 app.get('/news', function (req, res) {

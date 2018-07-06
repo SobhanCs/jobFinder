@@ -32,6 +32,9 @@ app.use(bodyParser('application/json', 'extended:1')); // get information from h
 // set the view engine to ejs
 app.set('view engine', 'ejs');
 
+app.set('views', 'views');
+
+
 // required for passport
 app.use(session({ secret: 'ilovescotchscotchyscotchscotch' })); // session secret
 app.use(passport.initialize());
@@ -41,7 +44,8 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 // routes ======================================================================
 require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
-// app.set('views', 'views');
+
+
 app.use(express.static(__dirname + '/public'));
 
 app.use(morgan('dev'));

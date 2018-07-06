@@ -6,7 +6,7 @@ var jobSchema = new mongoose.Schema({
         require: true
     }, // target url
     id: {
-        type: String,
+        type: Number,
         require: true,
         default:0
     }, // use the link of job as id

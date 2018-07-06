@@ -64,13 +64,15 @@ router.get('/', function (req, res) {
 });
 
 // all page 
-router.get('/all', function (req, res) {
+router.get('/all/:page', function (req, res) {
+    let Page = +req.params.page;
     jobModel.find({}, function (err, jobs) {
             return jobs;
-        }).limit(10)
+        }).skip((Page-1)*10).limit(10)
         .then(function (jobs) {
             res.render('result', {
-                Jobs: jobs
+                Jobs: jobs,
+                page: Page
             });
         });
 });
@@ -79,9 +81,6 @@ router.get('/all', function (req, res) {
 //     res.send(404);
 // });
 
+
 app.listen(3030);
 console.log('Server in runnig on port 3030');
-
-// launch ======================================================================
-// app.listen(port);
-// console.log('\nServer is running on port ' + port + '\n');

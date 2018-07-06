@@ -3,8 +3,9 @@
 //requires
 const express = require("express");
 const app = express();
+
 app.set('view engine', 'ejs');
-app.use(express.static(__dirname + "/scraper/public"));
+app.use(express.static(__dirname + "/public"));
 app.listen(8080);
 
 const bodyParser = require('body-parser')
@@ -12,7 +13,6 @@ app.use(bodyParser.json());
 
 const mongoose = require("mongoose");
 const cheerio = require('cheerio');
-const fs = require("fs");
 const axios = require("axios");
 
 //global variables
@@ -84,47 +84,48 @@ db.once('connected', function () {
     console.log("We are connected to MongoDB !");
 });
 
-// defining jonSchema in mongodb
-let jobSchema = new mongoose.Schema({
-    url: {
-        type: String,
-        require: true
-    }, // target url
-    id: {
-        type: String,
-        require: true
-    }, // use the link of job as id
-    title: String,
-    typeOfJob: String,
-    location: String,
-    typeOfCollaboration: String,
-    Salary: String,
-    militeryService: String,
-    skill: {
-        type: Array,
-        require: true
-    },
-    sex: String,
-    relativeField: [],
-    education: [],
-    companyName: {
-        type: String,
-        require: true
-    },
-    descriptionOfJob: String,
-    descriptionOfCompany: String,
-    siteName: String,
-    expireTime: String,
-    crawlTime: String,
-    experience: String,
-    logoSource: String,
-    companyName: String,
-    visibility: String,
-    minExperience:String
-});
+// // defining jonSchema in mongodb
+// let jobSchema = new mongoose.Schema({
+//     url: {
+//         type: String,
+//         require: true
+//     }, // target url
+//     id: {
+//         type: String,
+//         require: true
+//     }, // use the link of job as id
+//     title: String,
+//     typeOfJob: String,
+//     location: String,
+//     typeOfCollaboration: String,
+//     Salary: String,
+//     militeryService: String,
+//     skill: {
+//         type: Array,
+//         require: true
+//     },
+//     sex: String,
+//     relativeField: [],
+//     education: [],
+//     companyName: {
+//         type: String,
+//         require: true
+//     },
+//     descriptionOfJob: String,
+//     descriptionOfCompany: String,
+//     siteName: String,
+//     expireTime: String,
+//     crawlTime: String,
+//     experience: String,
+//     logoSource: String,
+//     companyName: String,
+//     visibility: String,
+//     minExperience:String
+// });
 
-let jobModel = mongoose.model("jobModel", jobSchema, 'jobModel'); // the name of collection by erfan
+// let jobModel = mongoose.model("jobModel", jobSchema, 'jobModel'); // the name of collection by erfan
 
+const jobModel = require('./app/models/jobModel'); // the name of collection by erfan
 
 // generateUrl() crawl a page and output an array of links of the page. 
 function generateUrl(url, target) {
@@ -181,7 +182,7 @@ function getUrlDetails(object, urls, target) {
                 url: url,
                 id: "our detail url",
                 visibility: "NEW",
-                crawlTime: repeated,
+                crawlTime: new Date().toJSON(),
                 expireTime: $(target.expire).text().replace(/ روز/g, ''),
                 descriptionOfJob: $(target.description).eq(0).text().trim().replace(/  /g, ''),
                 descriptionOfCompany: $(target.description).eq(1).text().trim().replace(/  /g, ''),
@@ -305,7 +306,7 @@ app.get('/', function (req, res) {
         if (err)
             console.log(">>>>>>>>>>>>>>>>>>>>>>> Database Error: cant find url of undefined " + err);      
         
-        res.render(__dirname + '/scraper/views/panel', {
+        res.render(__dirname + '/views/panel', {
             news: result
         })
     })

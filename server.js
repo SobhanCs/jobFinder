@@ -1,15 +1,46 @@
 // server.js
-// load the things we need
-var express = require('express');
-var mongoose = require('mongoose');
-var morgan = require('morgan');
-var bodyParser = require('body-parser');
-var app = express();
-var router = express.Router();
-var jobModel = require('./app/models/jobModel');
+
+
+// set up ======================================================================
+// get all the tools we need
+
+var express      = require('express');
+var mongoose     = require('mongoose');
+// var port         = process.env.PORT || 8580;
+var passport     = require('passport');
+var flash        = require('connect-flash');
+var morgan       = require('morgan');
+var bodyParser   = require('body-parser');
+var cookieParser = require('cookie-parser');
+var session      = require('express-session');
+var app          = express();
+var router       = express.Router();
+var jobModel     = require('./app/models/jobModel');
+
+var configDB = require('./config/database.js');
+
+// configuration ===============================================================
+mongoose.connect(configDB.url); // connect to our database
+
+require('./config/passport')(passport); // pass passport for configuration
+
+// set up our express application
+app.use(morgan('dev')); // log every request to the console
+app.use(cookieParser()); // read cookies (needed for auth)
+app.use(bodyParser('application/json', 'extended:1')); // get information from html forms
 
 // set the view engine to ejs
 app.set('view engine', 'ejs');
+
+// required for passport
+app.use(session({ secret: 'ilovescotchscotchyscotchscotch' })); // session secret
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+app.use(flash()); // use connect-flash for flash messages stored in session
+
+// routes ======================================================================
+require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
+
 // app.set('views', 'views');
 app.use(express.static(__dirname + '/public'));
 
@@ -48,5 +79,9 @@ router.get('/all', function (req, res) {
 //     res.send(404);
 // });
 
-app.listen(8080);
-console.log('Server in runnig on port 8080');
+app.listen(3030);
+console.log('Server in runnig on port 3030');
+
+// launch ======================================================================
+// app.listen(port);
+// console.log('\nServer is running on port ' + port + '\n');

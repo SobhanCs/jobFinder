@@ -178,7 +178,7 @@
                                 </li>
                                 <li class="valign-wrapper">
                                     <i class="material-icons tiny">description</i>
-                                    <%= job.typeOfCollaboration %>
+                                    <%= job.typeOfJob %>
                                 </li>
                             </ul>
                         </div>
@@ -196,11 +196,15 @@
                             </li>
                             <li class="valign-wrapper">
                                 <i class="material-icons">location_on</i>
-                                تهران، تهران
+                                <% job.relativeField.forEach( function(item) { %>
+                                    <span class="chip"> <%= item %> </span>
+                                <% }); %>
                             </li>
                             <li class="valign-wrapper">
                                 <i class="material-icons">description</i>
-                                قرارداد تمام‌وقت
+                                <% job.education.forEach( function(item) { %>
+                                    <span class="chip"> <%= item %> </span>
+                                <% }); %>
                             </li>
                         </ul>
                     </div>
@@ -209,31 +213,63 @@
 
                 <footer>
                     <ul class="pagination">
-                        <li class="disabled">
-                            <a href="#!">
+                        <% if (page < 4) { %> 
+                        <li class="">
+                            <a href="<%= page-1 %>">
                                 <i class="material-icons">chevron_right</i>
                             </a>
                         </li>
-                        <li class="active">
-                            <a href="#!">1</a>
+                        <li class=
+                            <% if (page === 1) { %>
+                            <%= "active waves-effect" %>
+                            <% } else { %>
+                            <%= "waves-effect" } %> >
+                            <a href="1">1</a>
+                        </li>
+                        <li class= >
+                            <a href="2">2</a>
+                        </li>
+                        <li class= />
+                            <a href="3">3</a>
+                        </li>
+                        <li class= />
+                            <a href="4">4</a>
                         </li>
                         <li class="waves-effect">
-                            <a href="#!">2</a>
+                            <a href="5">5</a>
                         </li>
                         <li class="waves-effect">
-                            <a href="#!">3</a>
-                        </li>
-                        <li class="waves-effect">
-                            <a href="#!">4</a>
-                        </li>
-                        <li class="waves-effect">
-                            <a href="#!">5</a>
-                        </li>
-                        <li class="waves-effect">
-                            <a href="#!">
+                            <a href="<%= page+1 %>">
                                 <i class="material-icons">chevron_left</i>
                             </a>
                         </li>
+                        <% } else { %>
+                            <li class="">
+                                    <a href="<%= page-1 %>">
+                                        <i class="material-icons">chevron_right</i>
+                                    </a>
+                                </li>
+                                <li class="waves-effect">
+                                    <a href="<%= page-2 %>"><%= page-2 %></a>
+                                </li>
+                                <li class="waves-effect">
+                                    <a href="<%= page-1 %>"><%= page-1 %></a>
+                                </li>
+                                <li class="active">
+                                    <a href="<%= page %>"><%= page %></a>
+                                </li>
+                                <li class="waves-effect">
+                                    <a href="<%= page+1 %>"><%= page+1 %></a>
+                                </li>
+                                <li class="waves-effect">
+                                    <a href="<%= page+2 %>"><%= page+2 %></a>
+                                </li>
+                                <li class="waves-effect">
+                                    <a href="<%= page+1 %>">
+                                        <i class="material-icons">chevron_left</i>
+                                    </a>
+                                </li>
+                            <% } %>
                     </ul>
                 </footer>
     </main>

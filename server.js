@@ -33,13 +33,15 @@ router.get('/', function (req, res) {
 });
 
 // all page 
-router.get('/all', function (req, res) {
+router.get('/all/:page', function (req, res) {
+    let Page = +req.params.page;
     jobModel.find({}, function (err, jobs) {
             return jobs;
-        }).limit(10)
+        }).skip((Page-1)*10).limit(10)
         .then(function (jobs) {
             res.render('result', {
-                Jobs: jobs
+                Jobs: jobs,
+                page: Page
             });
         });
 });

@@ -15,6 +15,9 @@ const cheerio = require('cheerio');
 const fs = require("fs");
 const axios = require("axios");
 
+const jobModel = require('./app/models/jobModel'); // the name of collection by erfan
+
+
 //global variables
 let $, repeated = 0,
     json = {},
@@ -81,51 +84,6 @@ db.on('error', function () {
 db.once('connected', function () {
     console.log("We are connected to MongoDB !");
 });
-
-// defining jonSchema in mongodb
-let jobSchema = new mongoose.Schema({
-    url: {
-        type: String,
-        require: true
-    }, // target url
-    id: {
-        type: String,
-        require: true
-    }, // use the link of job as id
-    title: {
-
-        type: String,
-        require: true
-
-    },
-    typeOfJob: String,
-    location: String,
-    typeOfCollaboration: String,
-    Salary: String,
-    militeryService: String,
-    skill: {
-        type: Array,
-        require: true
-    },
-    sex: String,
-    relativeField: [],
-    education: [],
-    companyName: {
-        type: String,
-        require: true
-    },
-    description: String,
-    logo: String,
-    expireTime: String,
-    crawlTime: String,
-    experience: String,
-    logoSource: String,
-    companyName: String,
-    visibility: String
-});
-
-let jobModel = mongoose.model("jobModel", jobSchema, 'jobModel'); // the name of collection by erfan
-
 
 // generateUrl() crawl a page and output an array of links of the page. 
 function generateUrl(url, target) {

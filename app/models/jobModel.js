@@ -25,17 +25,14 @@ var jobSchema = new mongoose.Schema({
     sex: String,
     relativeField: [],
     education: [],
-    logo: String,
-    companyName: {
-        type: String,
-        require: true
-    },
     description: String,
+    siteName: String,
     expireTime: String,
     crawlTime: String,
     experience: String,
     logoSource: String,
-    companyName: String
+    companyName: String,
+    visibility: String
 });
 
 module.exports = mongoose.model("jobModel", jobSchema, 'jobModel'); // the name of collection by erfan

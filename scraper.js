@@ -4,7 +4,7 @@
 const express = require("express");
 const app = express();
 app.set('view engine', 'ejs');
-app.use(express.static(__dirname + "/scraper/public"));
+app.use(express.static(__dirname + "/public"));
 app.listen(8080);
 
 const bodyParser = require('body-parser')
@@ -237,9 +237,11 @@ function getUrlDetails(object, urls, target) {
 
 app.get('/', function (req, res) {
     console.log("");
-    res.render(__dirname + '/scraper/views/panel', {
-        news: news
-    });
+
+
+    res.render(__dirname + '/views/panel', {})
+
+
 });
 
 app.get('/news', function (req, res) {

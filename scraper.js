@@ -125,6 +125,17 @@ db.once('connected', function () {
 // let jobModel = mongoose.model("jobModel", jobSchema, 'jobModel'); // the name of collection by erfan
 
 const jobModel = require('./app/models/jobModel'); // the name of collection by erfan
+const counter = require('./app/models/counterModel'); // for auto-increment id field
+
+counter.findById({_id: 'entityId'}, function(err, res) {
+    if (err) throw err;
+    if (res == null) {
+        new counter({
+            _id: 'entityId',
+            seq: 0
+        }).save();
+    }
+})
 
 // generateUrl() crawl a page and output an array of links of the page. 
 function generateUrl(url, target) {
@@ -179,7 +190,9 @@ function getUrlDetails(object, urls, target) {
 
             let final = { //finall is an object that will append to data base
                 url: url,
-                id: 1,
+
+                id: 0,
+
                 visibility: "NEW",
                 crawlTime: new Date().toJSON(),
                 expireTime: $(target.expire).text().replace(/ روز/g, ''),
@@ -227,7 +240,7 @@ function getUrlDetails(object, urls, target) {
                 ["حداقل مدرک تحصیلی", "education"],
                 ["حداقل سابقه کار", "minExperience"]
             ];
-
+        
             data["preRequire"].forEach(function (dataElement) {
                 thisItems = [];
                 dataElement["items"].forEach(function (items) { // Use forEach for tags
@@ -241,15 +254,14 @@ function getUrlDetails(object, urls, target) {
                 })
 
             })
+
             // console.log(final);
 
             //log finall and add to database - final is an object of a job
 
 
             index++;
-
-
-
+            
             jobModel.findOne({"url": final.url}, {"_id": 0,"url": 1}
                 ,function (err, item) {
                     if (err) {
@@ -257,11 +269,18 @@ function getUrlDetails(object, urls, target) {
                     }
 
                     if (item == null && statusCode==200) {
-
+                        counter.findByIdAndUpdate({_id: 'entityId'}, {$inc: { seq: 1} }, function(err, res) {
+                            if (err) throw err;
+                            final.id = res.seq;        // auto-increment id for our url
+                        }).then(function(res){
                         jobModel.insertMany(final,
-                            function () {
-                                console.log("job state " + index + " added !  /  with status code : " + statusCode);
-                            })
+
+                            function (err, doc) {
+                          console.log("job state " + index + " added !  /  with status code : " + statusCode);
+                        })
+
+                        json[news] = final
+                        news++
 
 
                         if (index < target.jobPerPage) {
@@ -277,6 +296,7 @@ function getUrlDetails(object, urls, target) {
                                 console.log("scaper done!!");
                             }
                         }
+                    })
 
                     } else {
                         repeated++;
@@ -288,6 +308,8 @@ function getUrlDetails(object, urls, target) {
                             
                         }
                     }
+                
+                
             })
             .catch(function (error) {
                 // handle error

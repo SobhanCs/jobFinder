@@ -16,9 +16,8 @@ const cheerio = require('cheerio');
 const axios = require("axios");
 
 //global variables
-let $, repeated = 0,
-    json = {},
-    news = 0;
+let $, repeated = 0
+
 
 var sources = {
     "jobinja": {
@@ -191,7 +190,9 @@ function getUrlDetails(object, urls, target) {
 
             let final = { //finall is an object that will append to data base
                 url: url,
+
                 id: 0,
+
                 visibility: "NEW",
                 crawlTime: new Date().toJSON(),
                 expireTime: $(target.expire).text().replace(/ روز/g, ''),
@@ -273,12 +274,14 @@ function getUrlDetails(object, urls, target) {
                             final.id = res.seq;        // auto-increment id for our url
                         }).then(function(res){
                         jobModel.insertMany(final,
-                            function (err, doc) {})
+
+                            function (err, doc) {
+                          console.log("job state " + index + " added !  /  with status code : " + statusCode);
+                        })
 
                         json[news] = final
                         news++
 
-                        console.log("job state " + index + " added !  /  with status code : " + statusCode);
 
                         if (index < target.jobPerPage) {
                             getUrlDetails(object, urls, sources.jobinja.target)
@@ -335,7 +338,7 @@ app.get('/news', function (req, res) {
 
         res.json(json)
 
-    })
+    }).limit(10)
 });
 
 app.post('/addNew', function (req, res) {

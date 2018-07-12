@@ -60,8 +60,22 @@ app.use('/', router);
 
 // homepage page 
 router.get('/', function (req, res) {
+    console.log("hi");
     res.sendFile(__dirname + "/views/index.html");
 });
+
+router.get('/', function (req, res) {
+    // console.log("hi");
+    res.render(__dirname + "/views/dashboard.ejs");
+});
+
+router.get('/panel', function (req, res) {
+    res.render(__dirname + "/views/panel.ejs");
+});
+
+// router.get('/result', function (req, res) {
+//     res.render(__dirname + "/views/result.ejs");
+// });
 
 // all page 
 router.get('/all/:page', function (req, res) {

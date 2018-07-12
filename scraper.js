@@ -238,7 +238,7 @@ function getUrlDetails(object, urls, target) {
 app.get('/', function (req, res) {
     console.log("");
 
-    res.render(__dirname + '/views/panel', {})
+    res.render(__dirname + '/views/panel', {news})
 
 });
 

@@ -7,40 +7,34 @@
     <title>crawler panel</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/iransans.css">
-    <style>
-        @import url(iransans.css);
+    <link rel="stylesheet" href="css/panel.css">
 
-        * {
-            padding: 0;
-            margin: 0;
-            box-sizing: border-box;
-
-
-            font-family: IRANSans;
-            font-weight: 300;
-
-        }
-        .badge{
-            color:#17a2b8;
-            background-color:white;
-        }
-    </style>
 </head>
 
 <body>
 
-    <body>
-        <div class="container mt-5">
-            <div class="row">
-                <button id="getnewJobs" class="btn btn-info w-50 m-auto shadow-lg rounded"><span class="badge mr-3"><%=news%></span>موقعیت های شغلی جدید را بده</button>
 
-                <div id="items">
-
-                </div>
+    <div class="container mt-5">
+        <div class="row d-flex justify-content-center">
+            <div class="align-self-center w-50">
+                <button id="getnewJobs" class="btn btn-info w-100 shadow-lg rounded" style="min-width: 260px">
+                    <span class="badge mr-3">
+                        <%=news%>
+                    </span>موقعیت های شغلی جدید را بده</button>
 
             </div>
+
+            <div id="items" class="w-100 ">
+
+            </div>
+
         </div>
-    </body>
+    </div>
+    <div class="container my-4 w-100 d-flex justify-content-center">
+        <div class="pagination items">
+        </div>
+    </div>
+
 
 
     <script src="js/jquery.min.js"></script>

@@ -22,6 +22,19 @@ var configDB = require('./config/database.js');
 // configuration ===============================================================
 mongoose.connect(configDB.url); // connect to our database
 
+// Connect to MongoDB
+mongoose.connect("mongodb://localhost:27017/jobteam");
+let db = mongoose.connection;
+
+// mongodb status
+db.on('error', function () {
+    console.log("We are not connected to MongoDB !");
+});
+db.once('connected', function () {
+    console.log("We are connected to MongoDB !");
+});
+
+
 require('./config/passport')(passport); // pass passport for configuration
 
 // set up our express application
@@ -67,7 +80,19 @@ app.use('/', router);
 router.get('/', function (req, res) {
 
     console.log(__dirname);
-    res.render('index');
+    res.render('index.ejs');
+});
+
+router.get('/login', function (req, res) {
+
+    console.log(__dirname);
+    res.render('/views/login.ejs');
+});
+
+router.get('/signup', function (req, res) {
+
+    console.log(__dirname);
+    res.render('/views/signup.ejs');
 });
 
 router.get('/', function (req, res) {
@@ -75,9 +100,9 @@ router.get('/', function (req, res) {
     res.render(__dirname + "/views/dashboard.ejs");
 });
 
-router.get('/panel', function (req, res) {
-    res.render(__dirname + "/views/panel.ejs");
-});
+// router.get('/panel', function (req, res) {
+//     res.render(__dirname + "/views/panel.ejs");
+// });
 
 // router.get('/result', function (req, res) {
 //     res.render(__dirname + "/views/result.ejs");
@@ -100,6 +125,73 @@ router.get('/all/:page', function (req, res) {
 // router.get('*', function (req, res) {
 //     res.send(404);
 // });
+
+//dashboard
+app.get('/panel', function (req, res) {
+
+    jobModel.find({
+        "visibility": "NEW"
+    }).count(function (err, result) {
+        if (err)
+            console.log(">>>>>>>>>>>>>>>>>>>>>>> Database Error: cant find url of undefined " + err);
+
+        res.render(__dirname + '/views/panel', {
+            news: result
+        })
+    })
+});
+
+app.get('/news', function (req, res) {
+    jobModel.find({
+        "visibility": "NEW"
+    }, function (err, json) {
+        if (err)
+            console.log(">>>>>>>>>>>>>>>>>>>>>>> Database Error: cant find url of undefined " + err);
+
+        res.json(json)
+
+    })
+});
+
+app.post('/addNew', function (req, res) {
+    console.log("new job visible");
+    let newJob = JSON.parse(JSON.stringify(req.body));
+
+    jobModel.update({
+        "url": newJob.url
+    }, {
+        $set: {
+            "visibility": "visible"
+        }
+    }, function (err, item) {
+        if (err)
+
+            console.log(item);
+
+    })
+
+    res.redirect('/news');
+});
+
+app.post('/newArchive', function (req, res) {
+    console.log("new job hidden");
+    let newArchive = JSON.parse(JSON.stringify(req.body));
+
+    jobModel.update({
+        "url": newArchive.url
+    }, {
+        $set: {
+            "visibility": "hidden"
+        }
+    }, function (err, item) {
+        if (err)
+
+            console.log(item);
+
+    })
+
+    res.redirect('/news');
+});
 
 
 app.listen(3030);

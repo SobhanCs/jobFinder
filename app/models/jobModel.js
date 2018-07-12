@@ -8,7 +8,7 @@ var jobSchema = new mongoose.Schema({
     id: {
         type: Number,
         require: true,
-        default:0
+        default: 0
     }, // use the link of job as id
     title: String,
 
@@ -36,7 +36,7 @@ var jobSchema = new mongoose.Schema({
     experience: String,
     logoSource: String,
     visibility: String,
-    minExperience:String
+    minExperience: String
 });
 
 module.exports = mongoose.model("jobModel", jobSchema, 'jobModel'); // the name of collection by erfan

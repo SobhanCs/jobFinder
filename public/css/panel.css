@@ -1,0 +1,51 @@
+@import url(iransans.css);
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: IRANSans;
+    font-weight: 300;
+}
+
+.badge {
+    color: #17a2b8;
+    background-color: white;
+}
+
+.pagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+}
+
+.pagination a.active {
+    background-color: dodgerblue;
+    color: white;
+}
+
+.pagination a:hover:not(.active) {
+    background-color: #ddd;
+}
+
+.items a {
+    cursor: pointer;
+}
+
+.Hover{
+transform: rotateX(30deg);
+transform-origin: 100% 100%;
+transition: transform 500ms;
+}
+.Hover:hover{
+    transform: rotateX(-10deg);
+    font-weight: bold;
+    text:white;
+    box-shadow:5px 10px 50px #a7a7a7 ;
+
+}
+
+.parent{
+    perspective: 800px;
+}

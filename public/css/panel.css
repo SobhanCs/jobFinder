@@ -28,3 +28,24 @@
 .pagination a:hover:not(.active) {
     background-color: #ddd;
 }
+
+.items a {
+    cursor: pointer;
+}
+
+.Hover{
+transform: rotateX(30deg);
+transform-origin: 100% 100%;
+transition: transform 500ms;
+}
+.Hover:hover{
+    transform: rotateX(-10deg);
+    font-weight: bold;
+    text:white;
+    box-shadow:5px 10px 50px #a7a7a7 ;
+
+}
+
+.parent{
+    perspective: 800px;
+}

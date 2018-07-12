@@ -6,7 +6,7 @@
 
 var express      = require('express');
 var mongoose     = require('mongoose');
-// var port         = process.env.PORT || 8580;
+//var port         = process.env.PORT || 8580;
 var passport     = require('passport');
 var flash        = require('connect-flash');
 var morgan       = require('morgan');
@@ -31,7 +31,7 @@ db.on('error', function () {
     console.log("We are not connected to MongoDB !");
 });
 db.once('connected', function () {
-    console.log("We are connected to MongoDB !");
+    // console.log("We are connected to MongoDB !");
 });
 
 
@@ -55,7 +55,7 @@ app.set('views', 'views');
 
 
 // required for passport
-app.use(session({ secret: 'ilovescotchscotchyscotchscotch' })); // session secret
+app.use(session({ secret: 'maktab13jobteam', resave: false, saveUninitialized: true })); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
@@ -70,7 +70,7 @@ app.use(express.static(__dirname + '/public'));
 
 mongoose.connect("mongodb://localhost:27017/jobteam", function (err) {
     if (err) throw err;
-    console.log("mongodb connected!");
+    console.log("We are connected to MongoDB now!");
 });
 
 app.use('/', router);
@@ -195,4 +195,4 @@ app.post('/newArchive', function (req, res) {
 
 
 app.listen(3030);
-console.log('Server in runnig on port 3030');
+console.log('\nServer in runnig on port 3030');

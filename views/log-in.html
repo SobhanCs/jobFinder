@@ -6,9 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.1.min.js"></script>
-    <link type="text/css" rel="stylesheet" href="../css/loginstyle.css">
+    <link type="text/css" rel="stylesheet" href="../public/css/loginstyle.css">
     <!-- <link rel="stylesheet" href="public/css/bootstrap.min.css"> -->
-    <link rel="stylesheet" href="../css/iransans.css">
+    <link rel="stylesheet" href="../public/css/iransans.css">
     <style>
         @import url(iransans.css);
 
@@ -27,7 +27,7 @@
             background-color:white;
         }
     </style>
-    <title> ثبت نام </title>
+    <title>Log-in</title>
 </head>
 <body>
     
@@ -40,27 +40,16 @@
             <img src="http://danielzawadzki.com/codepen/01/icon.svg" id="icon" alt="User Icon" />
           </div>
       
-           <!-- show any messages that come back with authentication -->
-           <% if (message.length > 0) { %>
-            <div class="alert alert-danger">
-                <%= message %>
-            </div>
-            <% } %>
-
           <!-- Login Form -->
-          <form action="/signup" method="post">
-            <div class="form-signin">
-                    <input type="text" id="login" class="fadeIn second" name="email" placeholder="آیدی یا ایمیل">
-            </div>
-            <div class="form-group">
-                    <input type="text" id="password" class="fadeIn third" name="password" placeholder="رمز عبور">
-            </div>
-            <input type="submit" class="fadeIn fourth" value="ایجاد حساب کاربری">
+          <form>
+            <input type="text" id="login" class="fadeIn second" name="login" placeholder="آیدی یا ایمیل">
+            <input type="text" id="password" class="fadeIn third" name="login" placeholder="رمز عبور">
+            <input type="submit" class="fadeIn fourth" value="ورود به حساب کاربری">
           </form>
       
           <!-- Remind Passowrd -->
           <div id="formFooter">
-            <a class="" href="/login"> ورود به حساب کاربری </a>
+            <a class="" href="#">ایجاد حساب کاربری جدید</a>
           </div>
       
         </div>

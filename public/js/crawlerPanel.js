@@ -18,7 +18,7 @@ function createNewJobs(json) {
     $("#items").html("")
     $("#items").hide()
     for (let index in json) {
-        console.log(json[index]);
+        // console.log(json[index]);
 
         $("#items").append(
             '<div class="col-12 p-2 text-right">' +
@@ -134,7 +134,7 @@ function addToArchive(index) {
         data: JSON.stringify(outputJSON[index]),
     }).then(function () {
         console.log("this job added to archive");
-        $("#items > div").eq(index).children().removeClass("bg-secondary").removeClass("bg-success").addClass("bg-danger",6000)
+        $("#items > div").eq(index).children().removeClass("bg-secondary").removeClass("bg-success").addClass("bg-danger")
     })
 }
 //<<<<<<>>>>>><<<<<<>>>>>><<<<<<>>>>>><<<<<<>>>>>>
@@ -148,7 +148,7 @@ function addToDatabase(index) {
         data: JSON.stringify(outputJSON[index]),
     }).then(function () {
         console.log("this job added to database");
-        $("#items > div").eq(index).children().removeClass("bg-secondary").removeClass("bg-danger").addClass("bg-success",6000)
+        $("#items > div").eq(index).children().removeClass("bg-secondary").removeClass("bg-danger").addClass("bg-success")
     })
 }
 //<<<<<<>>>>>><<<<<<>>>>>><<<<<<>>>>>><<<<<<>>>>>>

@@ -6,13 +6,12 @@ var jobSchema = new mongoose.Schema({
         require: true
     }, // target url
     id: {
-        type: String,
-        require: true
+        type: Number,
+        require: true,
+        default:0
     }, // use the link of job as id
-    title: {
-        type: String,
-        require: true
-    },
+    title: String,
+
     typeOfJob: String,
     location: String,
     typeOfCollaboration: String,
@@ -25,14 +24,19 @@ var jobSchema = new mongoose.Schema({
     sex: String,
     relativeField: [],
     education: [],
-    description: String,
     siteName: String,
+    companyName: {
+        type: String,
+        require: true
+    },
+    descriptionOfJob: String,
+    descriptionOfCompany: String,
     expireTime: String,
     crawlTime: String,
     experience: String,
     logoSource: String,
-    companyName: String,
-    visibility: String
+    visibility: String,
+    minExperience:String
 });
 
 module.exports = mongoose.model("jobModel", jobSchema, 'jobModel'); // the name of collection by erfan

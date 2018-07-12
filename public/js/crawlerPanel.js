@@ -19,7 +19,10 @@ function createNewJobs(json) {
         $("#items").append(
             '<div class="col-12 p-3 text-right">' +
             '<div id = "jobId_' + index + '" class="shadow card text-white bg-secondary mb-3">' +
-            '<div class="card-header"><a class="btn btn-info" role="button" href="' + json[index].url + '" target="_blank"><p class="secondary ml-2 mb-0" style="float:right"> - ' + (+index+1) + '</p><p style="float:right;vertical-align:middle;margin-bottom:0;">' + json[index].typeOfJob + '</p></a>' +
+            '<div class="card-header">'+
+            '<a class="btn btn-info" role="button" href="' + json[index].url + '" target="_blank">'+
+            '<p class="secondary ml-2 mb-0" style="float:right"> - ' + (+index+1) + '</p>'+
+            '<p style="float:right;vertical-align:middle;margin-bottom:0;">' + json[index].title.split('\n')[0] + '</p></a>' +
             '<button onclick="addToArchive(' + index + ')" type="button" class="btn btn-danger mx-2 col-2" style="float:left">پنهان</button>' +
             '<button onclick="addToDatabase(' + index + ')" type="button" class="btn btn-success ml-3 col-3" style="float:left">تایید</button></div>' +
 
@@ -35,7 +38,9 @@ function createNewJobs(json) {
             '<p class = "card-text" >' + json[index].relativeField + '</p>' +
             '<h6>حقوق</h6>' +
             '<p class = "card-text" >' + json[index].salary + '</p>' +
-            '</div><div class="col-5"><h6 >نام شرکت</h6>' +
+            '</div><div class="col-5"><h6>دسته بندی</h6>' +
+            '<p class = "card-text" >' + json[index].typeOfJob + '</p>' +
+            '<h6 >نام شرکت</h6>' +
             '<p class = "card-text" >' + json[index].companyName + '</p>' +
             '<h6>نوع همکاری</h6>' +
             '<p class = "card-text" >' + json[index].typeOfCollaboration + '</p>' +
@@ -57,7 +62,7 @@ function createNewJobs(json) {
 }
 
 function addToArchive(index) {
-    // console.log(outputJSON[index]);
+    console.log("hidden");
 
     $.ajax({
         method: "POST",
@@ -66,12 +71,12 @@ function addToArchive(index) {
         data: JSON.stringify(outputJSON[index]),
     }).then(function () {
         console.log("this job added to archive");
-        $("#items > div").eq(index - 1).children().removeClass("bg-secondary").removeClass("bg-success").addClass("bg-danger")
+        $("#items > div").eq(index).children().removeClass("bg-secondary").removeClass("bg-success").addClass("bg-danger")
     })
 }
 
 function addToDatabase(index) {
-    // console.log(outputJSON[index]);
+    console.log(outputJSON[index]);
 
     $.ajax({
         method: "POST",
@@ -80,6 +85,6 @@ function addToDatabase(index) {
         data: JSON.stringify(outputJSON[index]),
     }).then(function () {
         console.log("new job added");
-        $("#items > div").eq(index - 1).children().removeClass("bg-secondary").removeClass("bg-danger").addClass("bg-success")
+        $("#items > div").eq(index ).children().removeClass("bg-secondary").removeClass("bg-danger").addClass("bg-success")
     })
 }

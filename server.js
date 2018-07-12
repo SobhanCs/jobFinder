@@ -27,10 +27,19 @@ require('./config/passport')(passport); // pass passport for configuration
 // set up our express application
 app.use(morgan('dev')); // log every request to the console
 app.use(cookieParser()); // read cookies (needed for auth)
-app.use(bodyParser('application/json', 'extended:1')); // get information from html forms
+// app.use(bodyParser('application/json')); // get information from html forms
+app.use(bodyParser.urlencoded({
+    'extended': 'true'
+})); // parse application/x-www-form-urlencoded
+app.use(bodyParser.json({
+    type: 'application/json'
+})); // parse application/json
 
 // set the view engine to ejs
 app.set('view engine', 'ejs');
+
+app.set('views', 'views');
+
 
 // required for passport
 app.use(session({ secret: 'ilovescotchscotchyscotchscotch' })); // session secret
@@ -41,14 +50,10 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 // routes ======================================================================
 require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
-// app.set('views', 'views');
+
+
 app.use(express.static(__dirname + '/public'));
 
-app.use(morgan('dev'));
-app.use(bodyParser.urlencoded({
-    'extended': 'true'
-})); // parse application/x-www-form-urlencoded
-app.use(bodyParser.json()); // parse application/json
 
 mongoose.connect("mongodb://localhost:27017/jobteam", function (err) {
     if (err) throw err;
@@ -60,8 +65,9 @@ app.use('/', router);
 
 // homepage page 
 router.get('/', function (req, res) {
-    console.log("hi");
-    res.sendFile(__dirname + "/views/index.html");
+
+    console.log(__dirname);
+    res.render('index');
 });
 
 router.get('/', function (req, res) {

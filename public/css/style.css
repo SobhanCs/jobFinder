@@ -83,8 +83,10 @@ nav .brand-logo {
 #idSearch input, #searchBar input {
     font-family: 'b koodak';
     font-size: 20px;
+    line-height: 26px;
     width: 100%;
     border: 0;
+    /* color: rgb(78, 78, 78); */
 }
 
 #idSearch input:focus, #searchBar input:focus {

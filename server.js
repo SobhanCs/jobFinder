@@ -11,6 +11,7 @@ var passport = require('passport');
 var flash = require('connect-flash');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
+
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var fs = require('fs');
@@ -104,7 +105,8 @@ app.use('/', router);
 router.get('/', function (req, res) {
 
     // console.log(__dirname);
-    res.render('index.ejs');
+    // res.render('index.ejs');
+    res.render('index');
 });
 
 router.get('/login', function (req, res) {
@@ -145,6 +147,23 @@ router.get('/all/:page', function (req, res) {
             });
         });
 });
+
+router.get('/search', function (req, res) {
+    console.log(req.query);
+    let Page;
+    if (req.query.page == null)
+        Page = 1;
+    jobModel.find({ title: req.query.q }, function (err, jobs) {
+        console.log(jobs);
+        return jobs;
+    }).skip((Page-1)*10).limit(10)
+    .then(function (jobs) {
+        res.render('result', {
+            Jobs: jobs,
+            page: Page
+        });
+    });
+})
 
 // router.get('*', function (req, res) {
 //     res.send(404);

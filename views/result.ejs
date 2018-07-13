@@ -19,13 +19,13 @@
                 <a href="#" data-target="mobile-demo" class="sidenav-trigger right grey-text text-darken-1">
                     <i class="material-icons large">menu</i>
                 </a>
-                <a href="index.html" class="brand-logo">
+                <a href="/" class="brand-logo">
                     <span class="red-text text-darken-1">کار</span>
                     <span class="grey-text text-darken-1">شناس</span>
                 </a>
                 <div id="searchBar" class="white z-depth-1 valign-wrapper">
                     <input id="" class="browser-default" type="search">
-                    <a href="#">
+                    <a href="JavaScript:void(0);" onclick="btnSearch()">
                         <i class="material-icons btnSearch grey-text darken-1">search</i>
                     </a>
                 </div>
@@ -144,7 +144,7 @@
                 </ul>
             </aside>
             <section class="col s9">
-                <header>
+                <!-- <header>
                     <nav>
                         <div class="nav-wrapper">
                             <div class="col s12">
@@ -154,7 +154,7 @@
                             </div>
                         </div>
                     </nav>
-                </header>
+                </header> -->
                 <% Jobs.forEach( function(job) { %>
                 <div class="card horizontal hoverable">
                     <div class="card-image waves-effect waves-block waves-light">
@@ -218,16 +218,22 @@
                                 <i class="material-icons">chevron_right</i>
                             </a>
                         </li>
-                        <li class="" >
-                            <a href="1">1</a>
+                        <li class="waves-effect <% if (page == 1) { %>
+                            <%= "active" %>
+                            <% } %>" >
+                            <a href="&page=1">1</a>
                         </li>
-                        <li class= >
+                        <li class="waves-effect <% if (page == 2) { %>
+                                <%= "active" %>
+                                <% } %>" >
                             <a href="2">2</a>
                         </li>
-                        <li class= />
+                        <li class="waves-effect <% if (page == 3) { %>
+                                <%= "active" %>
+                                <% } %>" >
                             <a href="3">3</a>
                         </li>
-                        <li class= />
+                        <li class="waves-block" />
                             <a href="4">4</a>
                         </li>
                         <li class="waves-effect">

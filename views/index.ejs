@@ -71,12 +71,12 @@
                 <span class="red-text text-darken-1">کار</span>
                 <span class="grey-text text-darken-1">شناس</span>
             </div>
-            <form class="col s8 offset-s2">
+            <form class="col s8 offset-s2" method="GET" enctype="application/x-www-form-urlencoded" autocomplete="off" action="/search">
                 <div id="idSearch" class="z-depth-1 hoverable valign-wrapper">
-                    <input id="" class="browser-default grey-text text-darken-4" type="search">
-                    <a href="#">
+                    <input class="browser-default grey-text text-darken-4" name="q" type="text">
+                    <button type="submit">
                         <i class="material-icons btnSearch grey-text darken-1">search</i>
-                    </a>
+                    </button>
                 </div>
             </form>
         </div>

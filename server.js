@@ -70,7 +70,7 @@ app.use(express.static(__dirname + '/public'));
 
 mongoose.connect("mongodb://localhost:27017/jobteam", function (err) {
     if (err) throw err;
-    console.log("We are connected to MongoDB now!");
+    console.log("We are connected to MongoDB!");
 });
 
 app.use('/', router);
@@ -195,4 +195,4 @@ app.post('/newArchive', function (req, res) {
 
 
 app.listen(3030);
-console.log('\nServer in runnig on port 3030');
+console.log('\nServer is runnig on port 3030');

@@ -9,7 +9,7 @@ var mongoose     = require('mongoose');
 //var port         = process.env.PORT || 8580;
 var passport     = require('passport');
 var flash        = require('connect-flash');
-var morgan       = require('morgan');
+// var morgan       = require('morgan');
 var bodyParser   = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session      = require('express-session');
@@ -38,7 +38,7 @@ db.once('connected', function () {
 require('./config/passport')(passport); // pass passport for configuration
 
 // set up our express application
-app.use(morgan('dev')); // log every request to the console
+// app.use(morgan('dev')); // log every request to the console
 app.use(cookieParser()); // read cookies (needed for auth)
 // app.use(bodyParser('application/json')); // get information from html forms
 app.use(bodyParser.urlencoded({
@@ -79,8 +79,7 @@ app.use('/', router);
 // homepage page 
 router.get('/', function (req, res) {
 
-    console.log(__dirname);
-    res.render('index.ejs');
+    res.render('index');
 });
 
 router.get('/login', function (req, res) {
@@ -121,6 +120,23 @@ router.get('/all/:page', function (req, res) {
             });
         });
 });
+
+router.get('/search', function (req, res) {
+    console.log(req.query);
+    let Page;
+    if (req.query.page == null)
+        Page = 1;
+    jobModel.find({ title: req.query.q }, function (err, jobs) {
+        console.log(jobs);
+        return jobs;
+    }).skip((Page-1)*10).limit(10)
+    .then(function (jobs) {
+        res.render('result', {
+            Jobs: jobs,
+            page: Page
+        });
+    });
+})
 
 // router.get('*', function (req, res) {
 //     res.send(404);

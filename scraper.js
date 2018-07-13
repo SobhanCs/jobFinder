@@ -84,47 +84,6 @@ db.once('connected', function () {
     console.log("We are connected to MongoDB !");
 });
 
-// // defining jonSchema in mongodb
-// let jobSchema = new mongoose.Schema({
-//     url: {
-//         type: String,
-//         require: true
-//     }, // target url
-//     id: {
-//         type: String,
-//         require: true
-//     }, // use the link of job as id
-//     title: String,
-//     typeOfJob: String,
-//     location: String,
-//     typeOfCollaboration: String,
-//     Salary: String,
-//     militeryService: String,
-//     skill: {
-//         type: Array,
-//         require: true
-//     },
-//     sex: String,
-//     relativeField: [],
-//     education: [],
-//     companyName: {
-//         type: String,
-//         require: true
-//     },
-//     descriptionOfJob: String,
-//     descriptionOfCompany: String,
-//     siteName: String,
-//     expireTime: String,
-//     crawlTime: String,
-//     experience: String,
-//     logoSource: String,
-//     companyName: String,
-//     visibility: String,
-//     minExperience:String
-// });
-
-// let jobModel = mongoose.model("jobModel", jobSchema, 'jobModel'); // the name of collection by erfan
-
 const jobModel = require('./app/models/jobModel'); // the name of collection by erfan
 const counter = require('./app/models/counterModel'); // for auto-increment id field
 
@@ -135,7 +94,7 @@ counter.findById({
     if (res == null) {
         new counter({
             _id: 'entityId',
-            seq: 0
+            seq: 1
         }).save();
     }
 })
@@ -201,7 +160,7 @@ function getUrlDetails(object, urls, target) {
                 descriptionOfCompany: $(target.description).eq(1).text().trim().replace(/  /g, ''),
                 logoSource: $(target.logoOfCompany).attr("src"),
                 companyName: $(target.companyName).text().trim().replace(/  /g, ''),
-                title: $(target.subject).text().trim().replace(/استخدام/g, "").trim().replace(/  /g, ' '),
+                title: $(target.subject).text().trim().replace(/استخدام/g, "").trim().replace(/  /g, ' ').split('\n')[0],
                 siteName: target.siteName
             }
 
@@ -260,7 +219,6 @@ function getUrlDetails(object, urls, target) {
 
             //log finall and add to database - final is an object of a job
 
-
             index++;
 
             jobModel.findOne({
@@ -274,10 +232,20 @@ function getUrlDetails(object, urls, target) {
                     }
 
                     if (item == null && statusCode == 200) {
-                        counter.findByIdAndUpdate({ _id: 'entityId'}, { $inc: {seq: 1}}, function (err, res) {
+
+                        counter.findByIdAndUpdate({
+                            _id: "entityId"
+                        }, {
+                            $inc: {
+                                seq: 0.5
+                            }
+                        }, function (err, res) {
                             if (err) throw err;
+
                             final.id = res.seq; // auto-increment id for our url
+
                         }).then(function (res) {
+
                             jobModel.insertMany(final,
                                 function (err, doc) {
                                     json[news] = final
@@ -304,7 +272,7 @@ function getUrlDetails(object, urls, target) {
                     } else {
                         repeated++;
                         console.log("repeted job!!  --> " + repeated);
-                        if (repeated < 5) { //limitForRepeated
+                        if (repeated < 10) { //limitForRepeated
                             getUrlDetails(object, urls, sources.jobinja.target)
                         } else {
                             console.log("can not find new job ! ;)");
@@ -322,68 +290,73 @@ function getUrlDetails(object, urls, target) {
         })
 }
 
-app.get('/', function (req, res) {
+// app.get('/', function (req, res) {
 
-    jobModel.find({
-        "visibility": "NEW"
-    }).count(function (err, result) {
-        if (err)
-            console.log(">>>>>>>>>>>>>>>>>>>>>>> Database Error: cant find url of undefined " + err);
+//     jobModel.find({
+//         "visibility": "NEW"
+//     }).count(function (err, result) {
+//         if (err)
+//             console.log(">>>>>>>>>>>>>>>>>>>>>>> Database Error: cant find url of undefined " + err);
 
-        res.render(__dirname + '/views/panel', {
-            news: result
-        })
-    })
-});
+//         res.render(__dirname + '/views/panel', {
+//             news: result
+//         })
+//     })
+// });
 
-app.get('/news', function (req, res) {
-    jobModel.find({
-        "visibility": "NEW"
-    }, function (err, json) {
-        if (err)
-            console.log(">>>>>>>>>>>>>>>>>>>>>>> Database Error: cant find url of undefined " + err);
+// app.get('/news', function (req, res) {
+//     jobModel.find({
+//         "visibility": "NEW"
+//     }, function (err, json) {
+//         if (err)
+//             console.log(">>>>>>>>>>>>>>>>>>>>>>> Database Error: cant find url of undefined " + err);
 
-        res.json(json)
+//         res.json(json)
 
-    })
-});
+//     })
+// });
 
-app.post('/addNew', function (req, res) {
-    console.log("new job visible");
-    let newJob = JSON.parse(JSON.stringify(req.body));
 
-    jobModel.update({
-        "url": newJob.url
-    }, {
-        $set: {
-            "visibility": "visible"
-        }
-    }, function (err, item) {
-        if (err)
 
-            console.log(item);
 
-    })
+// app.post('/addNew', function (req, res) {
+//     console.log("new job visible");
+//     let newJob = JSON.parse(JSON.stringify(req.body));
 
-    res.redirect('/news');
-});
+//     jobModel.update({
+//         "url": newJob.url
+//     }, {
+//         $set: {
+//             "visibility": "visible"
+//         }
+//     }, function (err, item) {
+//         if (err)
 
-app.post('/newArchive', function (req, res) {
-    console.log("new job hidden");
-    let newArchive = JSON.parse(JSON.stringify(req.body));
+//             console.log(item);
 
-    jobModel.update({
-        "url": newArchive.url
-    }, {
-        $set: {
-            "visibility": "hidden"
-        }
-    }, function (err, item) {
-        if (err)
+//     })
 
-            console.log(item);
+//     res.redirect('/news');
+// });
 
-    })
 
-    res.redirect('/news');
-});
+// app.post('/newArchive', function (req, res) {
+//     console.log("new job hidden");
+//     let newArchive = JSON.parse(JSON.stringify(req.body));
+
+//     jobModel.update({
+//         "url": newArchive.url
+//     }, {
+//         $set: {
+//             "visibility": "hidden"
+//         }
+//     }, function (err, item) {
+//         if (err)
+
+//             console.log(item);
+
+//     })
+
+//     res.redirect('/news');
+// });
+

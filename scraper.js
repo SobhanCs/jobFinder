@@ -152,7 +152,7 @@ function getUrlDetails(object, urls, target) {
 
             let final = { //finall is an object that will append to data base
                 url: url,
-                id: 0,
+                id: -1,
                 visibility: "NEW",
                 crawlTime: new Date().toJSON(),
                 expireTime: $(target.expire).text().replace(/ روز/g, ''),
@@ -240,7 +240,7 @@ function getUrlDetails(object, urls, target) {
                                 seq: 0.5
                             }
                         }, function (err, res) {
-                            if (err) throw err;
+                            if (err) console.log(">>>>>>>>>>>>>>>>>>>>>>> Database Error: cant get seq from auto-increment")
 
                             final.id = res.seq; // auto-increment id for our url
 
@@ -290,73 +290,74 @@ function getUrlDetails(object, urls, target) {
         })
 }
 
-// app.get('/', function (req, res) {
+var currentPage = 1;
+app.get('/', function (req, res) {
 
-//     jobModel.find({
-//         "visibility": "NEW"
-//     }).count(function (err, result) {
-//         if (err)
-//             console.log(">>>>>>>>>>>>>>>>>>>>>>> Database Error: cant find url of undefined " + err);
-
-//         res.render(__dirname + '/views/panel', {
-//             news: result
-//         })
-//     })
-// });
-
-// app.get('/news', function (req, res) {
-//     jobModel.find({
-//         "visibility": "NEW"
-//     }, function (err, json) {
-//         if (err)
-//             console.log(">>>>>>>>>>>>>>>>>>>>>>> Database Error: cant find url of undefined " + err);
-
-//         res.json(json)
-
-//     })
-// });
-
-
-
-
-// app.post('/addNew', function (req, res) {
-//     console.log("new job visible");
-//     let newJob = JSON.parse(JSON.stringify(req.body));
-
-//     jobModel.update({
-//         "url": newJob.url
-//     }, {
-//         $set: {
-//             "visibility": "visible"
-//         }
-//     }, function (err, item) {
-//         if (err)
-
-//             console.log(item);
-
-//     })
-
-//     res.redirect('/news');
-// });
-
-
-// app.post('/newArchive', function (req, res) {
-//     console.log("new job hidden");
-//     let newArchive = JSON.parse(JSON.stringify(req.body));
-
-//     jobModel.update({
-//         "url": newArchive.url
-//     }, {
-//         $set: {
-//             "visibility": "hidden"
-//         }
-//     }, function (err, item) {
-//         if (err)
-
-//             console.log(item);
-
-//     })
-
-//     res.redirect('/news');
-// });
-
+        jobModel.find({
+            "visibility": "NEW"
+        }).count(function (err, result) {
+            if (err)
+                console.log(">>>>>>>>>>>>>>>>>>>>>>> Database Error: cant find url of undefined " + err);
+    
+            res.render(__dirname + '/views/panel', {
+                news: result
+            })
+        })
+    });
+    
+    app.get('/newjobs/:page', function (req, res) {
+        let page = req.params.page
+        let pageSize = 15
+    
+        currentPage = page
+    
+        jobModel.find({
+            "visibility": "NEW"
+        }, function (err, json) {
+            if (err)
+                console.log(">>>>>>>>>>>>>>>>>>>>>>>Database Error: cant find url of undefined " + err);
+    
+            res.json(json)
+            page++
+        }).skip(pageSize * (page - 1)).limit(pageSize)
+    });
+    
+    app.post('/addNew', function (req, res) {
+        console.log("new job visible");
+        let newJob = JSON.parse(JSON.stringify(req.body));
+    
+        jobModel.update({
+            "url": newJob.url
+        }, {
+            $set: {
+                "visibility": "visible"
+            }
+        }, function (err, item) {
+            if (err)
+    
+                console.log(item);
+    
+        })
+    
+        res.redirect('/newjobs/' + currentPage);
+    });
+    
+    app.post('/newArchive', function (req, res) {
+        console.log("new job hidden");
+        let newArchive = JSON.parse(JSON.stringify(req.body));
+    
+        jobModel.update({
+            "url": newArchive.url
+        }, {
+            $set: {
+                "visibility": "hidden"
+            }
+        }, function (err, item) {
+            if (err)
+    
+                console.log(item);
+    
+        })
+    
+        res.redirect('/newjobs/' + currentPage);
+    });

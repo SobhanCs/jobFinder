@@ -46,7 +46,7 @@ function createNewJobs(json) {
             '<h6>رشته های مربوط</h6>' +
             '<p class = "card-text" >' + json[index].relativeField + '</p>' +
             '<h6>حقوق</h6>' +
-            '<p class = "card-text" >' + json[index].salary + '</p>' +
+            '<p class = "card-text" >' + (json[index].salary ? json[index].salary : "تعریف نشده") + '</p>' +
             '</div><div class="col-5"><h6>دسته بندی</h6>' +
             '<p class = "card-text" >' + json[index].typeOfJob + '</p>' +
             '<h6 >نام شرکت</h6>' +
@@ -74,9 +74,10 @@ function createNewJobs(json) {
 }
 //pagination jquery nodejs
 //use jquery for make pagination DOM
+var pageSize = 15
 function makePagination() {
     $(".items").html("")
-    let pages = Math.ceil($(".badge").text() / 15)
+    let pages = Math.ceil($(".badge").text() / pageSize)
     pageNumber = pages;
     if (pages > 1) {
         $(".items").append('<a onclick="prevPage()" >&laquo;</a>')
@@ -155,5 +156,5 @@ function addToDatabase(index) {
 //onclick on header of jobs for slide in and show more
 function toggle(card,e) {
     if(e.target.innerHTML != "پنهان" & e.target.innerHTML != "تایید")
-    $("#body_" + card).slideToggle(900)
+    $("#body_" + card).slideToggle(400)
 }

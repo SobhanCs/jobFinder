@@ -4,18 +4,23 @@
 // set up ======================================================================
 // get all the tools we need
 
-var express      = require('express');
-var mongoose     = require('mongoose');
+var express = require('express');
+var mongoose = require('mongoose');
 //var port         = process.env.PORT || 8580;
-var passport     = require('passport');
-var flash        = require('connect-flash');
-// var morgan       = require('morgan');
-var bodyParser   = require('body-parser');
+var passport = require('passport');
+var flash = require('connect-flash');
+var morgan = require('morgan');
+var bodyParser = require('body-parser');
+
 var cookieParser = require('cookie-parser');
-var session      = require('express-session');
-var app          = express();
-var router       = express.Router();
-var jobModel     = require('./app/models/jobModel');
+var session = require('express-session');
+var fs = require('fs');
+var path = require('path');
+var rfs = require('rotating-file-stream')
+
+var app = express();
+var router = express.Router();
+var jobModel = require('./app/models/jobModel');
 
 var configDB = require('./config/database.js');
 
@@ -37,8 +42,29 @@ db.once('connected', function () {
 
 require('./config/passport')(passport); // pass passport for configuration
 
-// set up our express application
+
+// set up our express application - logger
+var logDirectory = path.join(__dirname, 'logger') //logDirectory
+
+// ensure log directory exists
+fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory)
+
+// create a rotating write stream
+var accessLogStream = rfs('logger.csv', {
+  interval: '1d', // rotate daily
+  path: logDirectory
+})
+
+// setup the logger
+app.use(morgan(':remote-addr, :remote-user, [:date[web]], :method, :url, HTTP/:http-version, :response-time[digits], :status, :res[content-length], :req[header], :res[header], ":referrer", ":user-agent"', {stream: accessLogStream}))
+
 // app.use(morgan('dev')); // log every request to the console
+
+// create a write stream (in append mode)
+// var accessLogStream = fs.createWriteStream(path.join(__dirname, 'logger.csv'), {flags: 'a'})
+
+
+
 app.use(cookieParser()); // read cookies (needed for auth)
 // app.use(bodyParser('application/json')); // get information from html forms
 app.use(bodyParser.urlencoded({
@@ -55,7 +81,11 @@ app.set('views', 'views');
 
 
 // required for passport
-app.use(session({ secret: 'maktab13jobteam', resave: false, saveUninitialized: true })); // session secret
+app.use(session({
+    secret: 'maktab13jobteam',
+    resave: false,
+    saveUninitialized: true
+})); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
@@ -112,7 +142,7 @@ router.get('/all/:page', function (req, res) {
     let Page = +req.params.page;
     jobModel.find({}, function (err, jobs) {
             return jobs;
-        }).skip((Page-1)*10).limit(10)
+        }).skip((Page - 1) * 10).limit(10)
         .then(function (jobs) {
             res.render('result', {
                 Jobs: jobs,

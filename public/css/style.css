@@ -45,6 +45,7 @@ body {
     font-size: 90px;
     padding-top: 90px;
     cursor: default;
+    user-select: none;
 }
 
 nav .brand-logo {
@@ -94,7 +95,7 @@ nav .brand-logo {
     outline-width: 0;
 }
 
-#idSearch button {
+#idSearch button, #searchBar button {
     border: 0;
     background-color: transparent;
     line-height: 1;
@@ -153,11 +154,16 @@ main {
     margin: 0 0 12px;
 }
 
-    .card img {
+    .card .card-image img {
         border: 1px solid rgb(245, 245, 245);
         width: 100px;
         height: 100px;
         margin: 24px 24px 0 0;
+    }
+
+    .card .card-content img {
+        height: 20px;
+        margin-top: 45px;
     }
 
     .card i {

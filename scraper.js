@@ -298,6 +298,7 @@ function getUrlDetails(object, urls, target) {
             console.log(">>>>>>>>>>>>>>>>>>>>>>> Database Error: cant find url of undefined " + err);
           }
 
+
           if (item == null && statusCode == 200) {
 
             counter.findByIdAndUpdate({

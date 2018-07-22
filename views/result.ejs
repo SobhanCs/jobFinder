@@ -15,38 +15,38 @@
 <body dir="rtl">
     <header class="">
         <nav class="grey lighten-3">
-            <div class="nav-wrapper valign-wrapper">
+            <form class="nav-wrapper valign-wrapper" method="GET" enctype="application/x-www-form-urlencoded" autocomplete="off" action="/search/">
                 <a href="#" data-target="mobile-demo" class="sidenav-trigger right grey-text text-darken-1">
                     <i class="material-icons large">menu</i>
                 </a>
-                <a href="index.html" class="brand-logo">
+                <a href="/" class="brand-logo">
                     <span class="red-text text-darken-1">کار</span>
                     <span class="grey-text text-darken-1">شناس</span>
                 </a>
                 <div id="searchBar" class="white z-depth-1 valign-wrapper">
-                    <input id="" class="browser-default" type="search">
-                    <a href="#">
+                    <input class="browser-default grey-text text-darken-4" name="q" type="text" value="<%=query.q%>">
+                    <button type="submit">
                         <i class="material-icons btnSearch grey-text darken-1">search</i>
-                    </a>
+                    </button>
                 </div>
                 <ul id="nav-mobile" class="left hide-on-med-and-down">
                     <li>
-                        <a href="#dashboard" class="grey-text text-darken-1">
+                        <a href="/dashboard" class="grey-text text-darken-1">
                             <i class="material-icons right">dashboard</i>
                         </a>
                     </li>
                     <li>
-                        <a href="#login" class="grey-text text-darken-1">ورود
+                        <a href="/login" class="grey-text text-darken-1">ورود
                             <i class="material-icons right">input</i>
                         </a>
                     </li>
                     <li>
-                        <a href="#register" class="grey-text text-darken-1">ثبت نام
+                        <a href="/signup" class="grey-text text-darken-1">ثبت نام
                             <i class="material-icons right">person_add</i>
                         </a>
                     </li>
                 </ul>
-            </div>
+            </form>
             <!-- <div class="grey lighten-4">
                 <ul class="red-text right">
                     <li><a href="#">دسته بندی</a></li>
@@ -55,36 +55,37 @@
         </nav>
         <ul class="sidenav" id="mobile-demo">
             <li>
-                <a href="#login" class="grey-text text-darken-1">ورود
+                <a href="/login" class="grey-text text-darken-1">ورود
                     <i class="material-icons left">input</i>
                 </a>
             </li>
             <li>
-                <a href="#register" class="grey-text text-darken-1">ثبت نام
+                <a href="/signup" class="grey-text text-darken-1">ثبت نام
                     <i class="material-icons left">person_add</i>
                 </a>
             </li>
             <li>
-                <a href="#dashboard" class="grey-text text-darken-1">داشبورد ادمین
+                <a href="/dashboard" class="grey-text text-darken-1">داشبورد ادمین
                     <i class="material-icons left">dashboard</i>
                 </a>
             </li>
             <li class="">
-                <a href="#all" class="grey-text text-darken-1">آرشیو</a>
+                <a href="/all?page=1" class="grey-text text-darken-1">آرشیو</a>
             </li>
             <li>
-                <a href="#all" class="grey-text text-darken-1">جدیدترین ها</a>
+                <a href="/all?page=1" class="grey-text text-darken-1">جدیدترین ها</a>
             </li>
         </ul>
     </header>
     <main class="white lighten-4">
         <div class="row">
+            <!--
             <aside class="col s3 right">
-                 <section>
+                <section>
                     <a class="waves-effect waves-light waves-block btn btn-large">
                         <i class="material-icons left">filter_list</i>فیلتر کن</a>
                 </section>
-                <!-- <section>
+                 <section>
                     <section class="switch">
                         <label>
                             فقط فرصت‌های زمان‌دار
@@ -93,42 +94,42 @@
                             همه فرصت‌ها
                         </label>
                     </section>
-                </section> -->
+                </section> 
                 <ul class="collapsible  expandable">
-                    <li>
+                     <li>
                         <div class="collapsible-header">
                             <a class="waves-effect waves-light waves-block btn btn-large">
                                 <i class="material-icons left">filter_list</i>فیلتر کن</a>
                         </div>
-                    </li>
+                    </li> 
                     <li>
                         <div class="collapsible-header right-align">
-                                <form action="#">
-                                        <p>
-                                          <label>
-                                            <input name="group1" type="radio" checked />
-                                            <span>قرمز</span>
-                                          </label>
-                                        </p>
-                                        <p>
-                                          <label>
-                                            <input name="group1" type="radio" />
-                                            <span>Yellow</span>
-                                          </label>
-                                        </p>
-                                        <p>
-                                          <label>
-                                            <input class="with-gap" name="group1" type="radio"  />
-                                            <span>Green</span>
-                                          </label>
-                                        </p>
-                                        <p>
-                                          <label>
-                                            <input name="group1" type="radio" disabled="disabled" />
-                                            <span>Brown</span>
-                                          </label>
-                                        </p>
-                                      </form>
+                            <form action="#">
+                                <p>
+                                    <label>
+                                        <input name="group1" type="radio" checked />
+                                        <span>قرمز</span>
+                                    </label>
+                                </p>
+                                <p>
+                                    <label>
+                                        <input name="group1" type="radio" />
+                                        <span>Yellow</span>
+                                    </label>
+                                </p>
+                                <p>
+                                    <label>
+                                        <input class="with-gap" name="group1" type="radio" />
+                                        <span>Green</span>
+                                    </label>
+                                </p>
+                                <p>
+                                    <label>
+                                        <input name="group1" type="radio" disabled="disabled" />
+                                        <span>Brown</span>
+                                    </label>
+                                </p>
+                            </form>
                         </div>
                         <div class="collapsible-body">
                             <span>Lorem ipsum dolor sit amet.</span>
@@ -143,8 +144,9 @@
                     </li>
                 </ul>
             </aside>
-            <section class="col s9">
-                <header>
+        -->
+            <section class="col s9 right">
+                <!-- <header>
                     <nav>
                         <div class="nav-wrapper">
                             <div class="col s12">
@@ -154,46 +156,53 @@
                             </div>
                         </div>
                     </nav>
-                </header>
+                </header> -->
                 <% Jobs.forEach( function(job) { %>
-                <div class="card horizontal hoverable">
-                    <div class="card-image waves-effect waves-block waves-light">
-                            <a href="<%= job.url %>"><img class="" src="<%= job.logoSource %>"></a>
-                    </div>
-                    <div class="card-stacked">
-                        <div class="card-content">
-                            <span class="activator card-title grey-text text-darken-4">
-                                <%= job.title %>
-                                <i class="material-icons left small">more_vert</i>
-                            </span>
-                            <ul class="grey-text text-darken-4">
-                                <li class="valign-wrapper">
-                                    <i class="material-icons tiny">location_city</i>
-                                    <%= job.companyName %>
-                                </li>
-                                <li class="valign-wrapper">
-                                    <i class="material-icons tiny">location_on</i>
-                                    <%= job.location %>
-                                </li>
-                                <li class="valign-wrapper">
+                    <div class="card horizontal hoverable">
+                        <div class="card-image waves-effect waves-block waves-light">
+                            <a href="<%= job.url %>">
+                                <img class="" src="<%= job.logoSource %>">
+                            </a>
+                        </div>
+                        <div class="card-stacked">
+                            <div class="card-content">
+                                <span class="card-title grey-text text-darken-4">
+                                    <a href="<%= job.url %>">
+                                        <%= job.title %>
+                                    </a>
+                                    <i class="activator material-icons left small pointer">more_vert</i>
+                                </span>
+                                <img src=<%="../img/" +job.siteName+ ".png" %> class="left" />
+                                <ul class="grey-text text-darken-4">
+                                    <li class="valign-wrapper">
+                                        <i class="material-icons tiny">location_city</i>
+                                        <%= job.companyName %>
+                                    </li>
+                                    <li class="valign-wrapper">
+                                        <i class="material-icons tiny">location_on</i>
+                                        <%= job.location %>
+                                    </li>
+                                    <!-- <li class="valign-wrapper">
                                     <i class="material-icons tiny">description</i>
                                     <%= job.typeOfJob %>
-                                </li>
-                            </ul>
+                                </li> -->
+                                </ul>
+
+                            </div>
                         </div>
-                    </div>
-                    <div class="card-reveal">
-                        <span class="card-title grey-text text-darken-4">
-                            <i class="material-icons left small">close</i>
-                        </span>
-                        <ul class="grey-text text-darken-4">
-                            <li class="valign-wrapper">
-                                <i class="material-icons">location_city</i>
-                                <% job.skill.forEach( function(item) { %>
-                                <span class="chip"> <%= item %> </span>
-                                <% }); %>
-                            </li>
-                            <li class="valign-wrapper">
+                        <div class="card-reveal">
+                            <span class="card-title grey-text text-darken-4">
+                                <i class="material-icons left small pointer">close</i>
+                            </span>
+                            <ul class="grey-text text-darken-4">
+                                <li class="">
+                                    <% job.skill.forEach( function(item) { %>
+                                        <span class="chip">
+                                            <%= item %>
+                                        </span>
+                                        <% }); %>
+                                </li>
+                                <!-- <li class="valign-wrapper">
                                 <i class="material-icons">location_on</i>
                                 <% job.relativeField.forEach( function(item) { %>
                                     <span class="chip"> <%= item %> </span>
@@ -204,69 +213,88 @@
                                 <% job.education.forEach( function(item) { %>
                                     <span class="chip"> <%= item %> </span>
                                 <% }); %>
-                            </li>
-                        </ul>
+                            </li> -->
+                            </ul>
+                        </div>
                     </div>
-                </div>
-                <% }); %>
+                    <% }); %>
 
-                <footer>
-                    <ul class="pagination">
-                        <% if (page < 4) { %> 
-                        <li class="">
-                            <a href="<%= page-1 %>">
-                                <i class="material-icons">chevron_right</i>
-                            </a>
-                        </li>
-                        <li class="" >
-                            <a href="1">1</a>
-                        </li>
-                        <li class= >
-                            <a href="2">2</a>
-                        </li>
-                        <li class= />
-                            <a href="3">3</a>
-                        </li>
-                        <li class= />
-                            <a href="4">4</a>
-                        </li>
-                        <li class="waves-effect">
-                            <a href="5">5</a>
-                        </li>
-                        <li class="waves-effect">
-                            <a href="<%= page+1 %>">
-                                <i class="material-icons">chevron_left</i>
-                            </a>
-                        </li>
-                        <% } else { %>
-                            <li class="">
-                                    <a href="<%= page-1 %>">
-                                        <i class="material-icons">chevron_right</i>
-                                    </a>
-                                </li>
-                                <li class="waves-effect">
-                                    <a href="<%= page-2 %>"><%= page-2 %></a>
-                                </li>
-                                <li class="waves-effect">
-                                    <a href="<%= page-1 %>"><%= page-1 %></a>
-                                </li>
-                                <li class="active">
-                                    <a href="<%= page %>"><%= page %></a>
-                                </li>
-                                <li class="waves-effect">
-                                    <a href="<%= page+1 %>"><%= page+1 %></a>
-                                </li>
-                                <li class="waves-effect">
-                                    <a href="<%= page+2 %>"><%= page+2 %></a>
-                                </li>
-                                <li class="waves-effect">
-                                    <a href="<%= page+1 %>">
-                                        <i class="material-icons">chevron_left</i>
-                                    </a>
-                                </li>
-                            <% } %>
-                    </ul>
-                </footer>
+                        <footer>
+                            <ul class="pagination">
+                                <% if (query.page < 4) { %>
+                                    <li class="<% if (query.page == 1) { %>
+                                            <%=" disabled "%>
+                                        <% } %> ">
+                                        <a <% if (query.page > 1) { %>
+                                            href="?q=<%=query.q%>&amp;page=<%= query.page-1 %><% } %>" >
+                                                    <i class="material-icons">chevron_right</i>
+                                        </a>
+                                    </li>
+                                    <li class="waves-effect <% if (query.page == 1) { %>
+                                        <%= " active " %>
+                                        <% } %>">
+                                        <a href="?q=<%=query.q%>&amp;page=1">1</a>
+                                    </li>
+                                    <li class="waves-effect <% if (query.page == 2) { %>
+                                <%= " active " %>
+                                <% } %>">
+                                        <a href="?q=<%=query.q%>&amp;page=2">2</a>
+                                    </li>
+                                    <li class="waves-effect <% if (query.page == 3) { %>
+                                <%= " active " %>
+                                <% } %>">
+                                        <a href="?q=<%=query.q%>&amp;page=3">3</a>
+                                    </li>
+                                    <li class="waves-block" />
+                                    <a href="?q=<%=query.q%>&amp;page=4">4</a>
+                                    </li>
+                                    <li class="waves-effect">
+                                        <a href="?q=<%=query.q%>&amp;page=5">5</a>
+                                    </li>
+                                    <li class="waves-effect">
+                                        <a href="?q=<%=query.q%>&amp;page=<%= +query.page+1 %>">
+                                            <i class="material-icons">chevron_left</i>
+                                        </a>
+                                    </li>
+                                    <% } else { %>
+                                        <li class="">
+                                            <a href="?q=<%=query.q%>&amp;page=<%= query.page-1 %>">
+                                                <i class="material-icons">chevron_right</i>
+                                            </a>
+                                        </li>
+                                        <li class="waves-effect">
+                                            <a href="?q=<%=query.q%>&amp;page=<%= query.page-2 %>">
+                                                <%= +query.page-2 %>
+                                            </a>
+                                        </li>
+                                        <li class="waves-effect">
+                                            <a href="?q=<%=query.q%>&amp;page=<%= query.page-1 %>">
+                                                <%= +query.page-1 %>
+                                            </a>
+                                        </li>
+                                        <li class="active">
+                                            <a href="?q=<%=query.q%>&amp;page=<%= query.page %>">
+                                                <%= +query.page %>
+                                            </a>
+                                        </li>
+                                        <li class="waves-effect">
+                                            <a href="?q=<%=query.q%>&amp;page=<%= query.page+1 %>">
+                                                <%= +query.page+1 %>
+                                            </a>
+                                        </li>
+                                        <li class="waves-effect">
+                                            <a href="?q=<%=query.q%>&amp;page=<%= query.page+2 %>">
+                                                <%= +query.page+2 %>
+                                            </a>
+                                        </li>
+                                        <li class="waves-effect">
+                                            <a href="?q=<%=query.q%>&amp;page=<%= query.page+1 %>">
+                                                <i class="material-icons">chevron_left</i>
+                                            </a>
+                                        </li>
+                                        <% } %>
+                            </ul>
+                        </footer>
     </main>
     <footer>
 

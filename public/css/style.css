@@ -32,6 +32,10 @@ body {
     font-family: 'b koodak';
 }
 
+.pointer {
+    cursor: pointer;
+}
+
 /* main {
     /* background-image: url('../img/Handshake-close-up-of-executives/O6JTUC0.jpg');
       background-repeat: no-repeat;
@@ -44,6 +48,8 @@ body {
     font-family: 'a ghasem';
     font-size: 90px;
     padding-top: 90px;
+    cursor: default;
+    user-select: none;
 }
 
 nav .brand-logo {
@@ -86,21 +92,28 @@ nav .brand-logo {
     line-height: 26px;
     width: 100%;
     border: 0;
-    /* color: rgb(78, 78, 78); */
+    color: rgb(49, 49, 49) !important;
 }
 
 #idSearch input:focus, #searchBar input:focus {
     outline-width: 0;
 }
 
+#idSearch button, #searchBar button {
+    border: 0;
+    background-color: transparent;
+    line-height: 1;
+}
+
 .btnSearch {
-    margin-top: 10px;
+    margin-top: 3px;
     font-size: 42px;
     border-radius: 2px;
 }
 
 .btnSearch:hover {
     color: #E53935 !important;
+    cursor: pointer;
 }
 
 main {
@@ -109,10 +122,6 @@ main {
 
     .breadcrumb:before {
         content: 'chevron_left';
-    }
-
-    main > div > aside {
-
     }
 
         main > div > aside .btn-large {
@@ -130,6 +139,7 @@ main {
     main > div > section {
         padding-left: 15% !important;
         /* margin-left: 20px; */
+        margin-right: 9.5%;
     }
 
     main > .row > .col {
@@ -143,13 +153,20 @@ main {
 
 .card {
     margin: 0 0 12px;
+    /* border-radius: 8px 100px 100px 8px; */
+    border-radius: 8px;
 }
 
-    .card img {
+    .card .card-image img {
         border: 1px solid rgb(245, 245, 245);
         width: 100px;
         height: 100px;
         margin: 24px 24px 0 0;
+    }
+
+    .card .card-content img {
+        height: 20px;
+        margin-top: 45px;
     }
 
     .card i {
@@ -159,4 +176,16 @@ main {
 
     .card .card-content {
         padding: 24px 24px 24px;
+    }
+
+    .card .card-title a {
+        color: rgb(33, 33, 33);
+    }
+
+    .card .card-title a:hover {
+        color: #E53935;
+    }
+
+    .card .card-title a:visited {
+        color: rgb(156, 37, 35);
     }

@@ -76,9 +76,10 @@ function createNewJobs(json) {
 }
 //pagination jquery nodejs
 //use jquery for make pagination DOM
+var pageSize = 15
 function makePagination() {
     $(".items").html("")
-    let pages = Math.ceil($(".badge").text() / 15)
+    let pages = Math.ceil($(".badge").text() / pageSize)
     pageNumber = pages;
     if (pages > 1) {
         $(".items").append('<a onclick="prevPage()" >&laquo;</a>')
@@ -157,5 +158,6 @@ function addToDatabase(index) {
 //onclick on header of jobs for slide in and show more
 function toggle(card,e) {
     if(e.target.innerHTML != "پنهان" & e.target.innerHTML != "تایید")
-    $("#body_" + card).slideToggle(900)
+
+    $("#body_" + card).slideToggle(400)
 }

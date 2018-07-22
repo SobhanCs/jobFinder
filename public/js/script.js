@@ -14,3 +14,15 @@ var elem = document.querySelector('.collapsible.expandable');
 var instance = M.Collapsible.init(elem, {
   accordion: false
 });
+
+// function btnSearch() {
+//   let str = $("#idSearch > input").val();
+//   str = str.replace(/\s/g, '+');
+//   // console.log(str);
+//   $.get(`/search?query=${str}`);
+// }
+
+// $(document).ready(function () {
+//   alert("Hi");
+//   $(".pagination a").each((item, index)=>{$(item).attr("href", "window.location.href") });
+// })

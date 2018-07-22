@@ -26,7 +26,7 @@ function createNewJobs(json) {
             '<div class="card-header col-12" onclick="toggle(' + index + ',event)" style="cursor:pointer;border:none">' +
             '<div class="col-6 p-2 parent" style="float:right"><a class="btn btn-info col-12 Hover" role="button" href="' + json[index].url + '" target="_blank">' +
             '<p class="secondary ml-2 mb-0" style="float:right"> - ' + (+index + 1) + '</p>' +
-            '<p style="float:right;vertical-align:middle;margin-bottom:0;">' + json[index].title + '</p></a></div>' +
+            '<p style="float:right;vertical-align:middle;margin-bottom:0;">' + (json[index].title ? json[index].title: "تعریف نشده" ) + '</p></a></div>' +
             '<div class="col-3 p-2 parent" style="float:left" ><button onclick="addToArchive(' + index + ')" type="button" class="btn btn-danger col-12 Hover">پنهان</button></div>' +
             '<div class="col-3 p-2 parent" style="float:left" ><button onclick="addToDatabase(' + index + ')" type="button" class="btn btn-success col-12 Hover">تایید</button></div>'+
             '<div class="col-12 mt-2 d-flex justify-content-center">&#8645;</div></div>' +
@@ -34,35 +34,37 @@ function createNewJobs(json) {
             '<div class = "card-body row" id="body_' + index + '">' +
             '<div class = "col-2">'+
             '<h6>منبع</h6>' +
-            '<p>'+json[index].siteName+'</p><br>'+
+            '<p>'+ (json[index].siteName ? json[index].siteName: "تعریف نشده" ) +'</p><br>'+
             '<h6>لوگو شرکت</h6>' +
             '<img width="100%" height="150px" src="' + json[index].logoSource + '" style="float:left"></img>' +
             '</div><div class="col-5"><h6>وضعیت نظام وضیفه</h6>' +
-            '<p class = "card-text" >' + json[index].militeryService + '</p>' +
+            '<p class = "card-text" >' + (json[index].militeryService ? json[index].militeryService : "تعریف نشده") + '</p>' +
             '<h6>موقعیت مکانی</h6>' +
-            '<p class = "card-text" >' + json[index].location + '</p>' +
+            '<p class = "card-text" >' + (json[index].location ? json[index].location : "تعریف نشده") + '</p>' +
             '<h6>تحصیلات</h6>' +
-            '<p class = "card-text" >' + json[index].education + '</p>' +
+            '<p class = "card-text" >' + (json[index].education ? json[index].education : "تعریف نشده") + '</p>' +
             '<h6>رشته های مربوط</h6>' +
-            '<p class = "card-text" >' + json[index].relativeField + '</p>' +
+            '<p class = "card-text" >' + (json[index].relativeField ? json[index].relativeField : "تعریف نشده") + '</p>' +
             '<h6>حقوق</h6>' +
-            '<p class = "card-text" >' + (json[index].salary ? json[index].salary : "تعریف نشده") + '</p>' +
+            '<p class = "card-text" >' + (json[index].Salary ? json[index].Salary : "تعریف نشده") + '</p>' +
+            '<h6>مهلت ارسال رزومه</h6>' +
+            '<p class = "card-text" >' + (json[index].expireTime ? json[index].expireTime : "تعریف نشده") + '</p>' +
             '</div><div class="col-5"><h6>دسته بندی</h6>' +
-            '<p class = "card-text" >' + json[index].typeOfJob + '</p>' +
+            '<p class = "card-text" >' + (json[index].typeOfJob ? json[index].typeOfJob : "تعریف نشده") + '</p>' +
             '<h6 >نام شرکت</h6>' +
-            '<p class = "card-text" >' + json[index].companyName + '</p>' +
+            '<p class = "card-text" >' + (json[index].companyName ? json[index].companyName : "تعریف نشده") + '</p>' +
             '<h6>نوع همکاری</h6>' +
-            '<p class = "card-text" >' + json[index].typeOfCollaboration + '</p>' +
+            '<p class = "card-text" >' + (json[index].typeOfCollaboration ? json[index].typeOfCollaboration : "تعریف نشده") + '</p>' +
             '<h6>مهارت های مورد نیاز</h6>' +
-            '<p class = "card-text" >' + json[index].skill + '</p>' +
+            '<p class = "card-text" >' + (json[index].skill ? json[index].skill : "تعریف نشده") + '</p>' +
             '<h6>جنسیت</h6>' +
-            '<p class = "card-text" >' + json[index].sex + '</p>' +
+            '<p class = "card-text" >' + (json[index].sex ? json[index].sex : "تعریف نشده") + '</p>' +
             '<h6>سابقه کار</h6>' +
-            '<p class = "card-text" >' + json[index].minExperience + '</p>' +
+            '<p class = "card-text" >' + (json[index].minExperience ? json[index].minExperience : "تعریف نشده") + '</p>' +
             '</div><div class="col-12 mt-4"><h6>توضیحات شغل</h6>' +
-            '<p class = "card-text" >' + json[index].descriptionOfJob + '</p>' +
+            '<p class = "card-text" >' + (json[index].descriptionOfJob ? json[index].descriptionOfJob : "تعریف نشده") + '</p>' +
             '<h6>معرفی شرکت</h6>' +
-            '<p class = "card-text" >' + json[index].descriptionOfCompany + '</p></div>' +
+            '<p class = "card-text" >' + (json[index].descriptionOfCompany ? json[index].descriptionOfCompany : "تعریف نشده") + '</p></div>' +
             '</div>' +
             '</div>' +
             '</div>'
@@ -93,7 +95,7 @@ function makePagination() {
     }
 }
 //<<<<<<>>>>>><<<<<<>>>>>><<<<<<>>>>>><<<<<<>>>>>>
-//call API for get jobs of current page 
+//call API for get jobs of current page
 function getThisPage(page) {
     currentPage = page
     let url = "/newjobs/" + page
@@ -156,5 +158,6 @@ function addToDatabase(index) {
 //onclick on header of jobs for slide in and show more
 function toggle(card,e) {
     if(e.target.innerHTML != "پنهان" & e.target.innerHTML != "تایید")
+
     $("#body_" + card).slideToggle(400)
 }

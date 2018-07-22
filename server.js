@@ -42,7 +42,6 @@ db.once('connected', function () {
 
 require('./config/passport')(passport); // pass passport for configuration
 
-
 // set up our express application - logger
 var logDirectory = path.join(__dirname, 'logger') //logDirectory
 // ensure log directory exists
@@ -103,9 +102,6 @@ app.use('/', router);
 
 // homepage page 
 router.get('/', function (req, res) {
-
-    // console.log(__dirname);
-    // res.render('index.ejs');
     res.render('index');
 });
 

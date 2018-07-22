@@ -24,8 +24,29 @@ mongoose.connect(configDB.url); // connect to our database
 
 require('./config/passport')(passport); // pass passport for configuration
 
+<<<<<<< Updated upstream
 // set up our express application
 app.use(morgan('dev')); // log every request to the console
+=======
+
+// set up our express application - logger
+var logDirectory = path.join(__dirname, 'logger') //logDirectory
+// ensure log directory exists
+fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory)
+// create a rotating write stream
+var accessLogStream = rfs('logger.csv', {
+  interval: '1d', // rotate daily
+  path: logDirectory
+})
+// setup the logger
+app.use(morgan(':remote-addr, :remote-user, [:date[web]], :method, :url, HTTP/:http-version, :response-time[digits], :status, :res[content-length], :req[header], :res[header], ":referrer", ":user-agent"', {stream: accessLogStream}))
+
+app.use(morgan('dev')); // log every request to the console
+
+// create a write stream (in append mode)
+// var accessLogStream = fs.createWriteStream(path.join(__dirname, 'logger.csv'), {flags: 'a'})
+
+>>>>>>> Stashed changes
 app.use(cookieParser()); // read cookies (needed for auth)
 // app.use(bodyParser('application/json')); // get information from html forms
 app.use(bodyParser.urlencoded({
@@ -65,6 +86,17 @@ app.use('/', router);
 
 // homepage page 
 router.get('/', function (req, res) {
+<<<<<<< Updated upstream
+=======
+
+    // console.log(__dirname);
+    // res.render('index.ejs');
+    res.render('index');
+});
+
+router.get('/login', function (req, res) {
+
+>>>>>>> Stashed changes
     console.log(__dirname);
     res.render('index');
 });

@@ -135,21 +135,25 @@ router.get('/', function (req, res) {
 // });
 
 // all page 
-router.get('/all/:page', function (req, res) {
-    // console.log('all');
-    let Page = +req.params.page;
+router.get('/all', function (req, res) {
+    if (!req.query.page)
+        req.query.page = '1';
+    console.log(req.query);  
+    let Page = +req.query.page;
     jobModel.find({}, function (err, jobs) {
             return jobs;
-        }).skip((Page - 1) * 10).limit(10)
+        }).sort({ crawlTime: -1}).skip((Page - 1) * 10).limit(10)
         .then(function (jobs) {
             res.render('result', {
                 Jobs: jobs,
-                page: Page
+                query: req.query
             });
         });
 });
 
 router.get('/search', function (req, res) {
+    if (!req.query.page)
+        req.query.page = '1';
     let qArr = req.query.q.split(" ");
     let reqxArr = [];
     qArr.forEach(element => {
@@ -157,17 +161,15 @@ router.get('/search', function (req, res) {
         reqxArr.push(regEx);
     });
     // console.log(reqxArr);
-    let Page;
-    if (req.query.page == null)
-        Page = 1;
+    let Page = +req.query.page;
     jobModel.find({ title: { $in: reqxArr } }, function (err, jobs) {
         // console.log(jobs);
         return jobs;
-    }).skip((Page-1)*10).limit(10)
+    }).sort({ crawlTime: -1 }).skip((Page-1)*10).limit(10)
     .then(function (jobs) {
         res.render('result', {
             Jobs: jobs,
-            page: Page
+            query: req.query
         });
     });
 })

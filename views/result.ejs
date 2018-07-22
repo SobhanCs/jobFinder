@@ -15,7 +15,7 @@
 <body dir="rtl">
     <header class="">
         <nav class="grey lighten-3">
-            <form class="nav-wrapper valign-wrapper" method="GET" enctype="application/x-www-form-urlencoded" autocomplete="off" action="/search">
+            <form class="nav-wrapper valign-wrapper" method="GET" enctype="application/x-www-form-urlencoded" autocomplete="off" action="/search/">
                 <a href="#" data-target="mobile-demo" class="sidenav-trigger right grey-text text-darken-1">
                     <i class="material-icons large">menu</i>
                 </a>
@@ -24,24 +24,24 @@
                     <span class="grey-text text-darken-1">شناس</span>
                 </a>
                 <div id="searchBar" class="white z-depth-1 valign-wrapper">
-                    <input class="browser-default grey-text text-darken-4" name="q" type="text">
+                    <input class="browser-default grey-text text-darken-4" name="q" type="text" value="<%=query.q%>">
                     <button type="submit">
                         <i class="material-icons btnSearch grey-text darken-1">search</i>
                     </button>
                 </div>
                 <ul id="nav-mobile" class="left hide-on-med-and-down">
                     <li>
-                        <a href="#dashboard" class="grey-text text-darken-1">
+                        <a href="/dashboard" class="grey-text text-darken-1">
                             <i class="material-icons right">dashboard</i>
                         </a>
                     </li>
                     <li>
-                        <a href="#login" class="grey-text text-darken-1">ورود
+                        <a href="/login" class="grey-text text-darken-1">ورود
                             <i class="material-icons right">input</i>
                         </a>
                     </li>
                     <li>
-                        <a href="#register" class="grey-text text-darken-1">ثبت نام
+                        <a href="/signup" class="grey-text text-darken-1">ثبت نام
                             <i class="material-icons right">person_add</i>
                         </a>
                     </li>
@@ -55,36 +55,37 @@
         </nav>
         <ul class="sidenav" id="mobile-demo">
             <li>
-                <a href="#login" class="grey-text text-darken-1">ورود
+                <a href="/login" class="grey-text text-darken-1">ورود
                     <i class="material-icons left">input</i>
                 </a>
             </li>
             <li>
-                <a href="#register" class="grey-text text-darken-1">ثبت نام
+                <a href="/signup" class="grey-text text-darken-1">ثبت نام
                     <i class="material-icons left">person_add</i>
                 </a>
             </li>
             <li>
-                <a href="#dashboard" class="grey-text text-darken-1">داشبورد ادمین
+                <a href="/dashboard" class="grey-text text-darken-1">داشبورد ادمین
                     <i class="material-icons left">dashboard</i>
                 </a>
             </li>
             <li class="">
-                <a href="#all" class="grey-text text-darken-1">آرشیو</a>
+                <a href="/all?page=1" class="grey-text text-darken-1">آرشیو</a>
             </li>
             <li>
-                <a href="#all" class="grey-text text-darken-1">جدیدترین ها</a>
+                <a href="/all?page=1" class="grey-text text-darken-1">جدیدترین ها</a>
             </li>
         </ul>
     </header>
     <main class="white lighten-4">
         <div class="row">
+            <!--
             <aside class="col s3 right">
                 <section>
                     <a class="waves-effect waves-light waves-block btn btn-large">
                         <i class="material-icons left">filter_list</i>فیلتر کن</a>
                 </section>
-                <!-- <section>
+                 <section>
                     <section class="switch">
                         <label>
                             فقط فرصت‌های زمان‌دار
@@ -93,14 +94,14 @@
                             همه فرصت‌ها
                         </label>
                     </section>
-                </section> -->
+                </section> 
                 <ul class="collapsible  expandable">
-                    <!-- <li>
+                     <li>
                         <div class="collapsible-header">
                             <a class="waves-effect waves-light waves-block btn btn-large">
                                 <i class="material-icons left">filter_list</i>فیلتر کن</a>
                         </div>
-                    </li> -->
+                    </li> 
                     <li>
                         <div class="collapsible-header right-align">
                             <form action="#">
@@ -143,7 +144,8 @@
                     </li>
                 </ul>
             </aside>
-            <section class="col s9">
+        -->
+            <section class="col s9 right">
                 <!-- <header>
                     <nav>
                         <div class="nav-wrapper">
@@ -164,9 +166,11 @@
                         </div>
                         <div class="card-stacked">
                             <div class="card-content">
-                                <span class="activator card-title grey-text text-darken-4">
-                                    <%= job.title %>
-                                        <i class="material-icons left small">more_vert</i>
+                                <span class="card-title grey-text text-darken-4">
+                                    <a href="<%= job.url %>">
+                                        <%= job.title %>
+                                    </a>
+                                    <i class="activator material-icons left small pointer">more_vert</i>
                                 </span>
                                 <img src=<%="../img/" +job.siteName+ ".png" %> class="left" />
                                 <ul class="grey-text text-darken-4">
@@ -188,7 +192,7 @@
                         </div>
                         <div class="card-reveal">
                             <span class="card-title grey-text text-darken-4">
-                                <i class="material-icons left small">close</i>
+                                <i class="material-icons left small pointer">close</i>
                             </span>
                             <ul class="grey-text text-darken-4">
                                 <li class="">
@@ -217,72 +221,74 @@
 
                         <footer>
                             <ul class="pagination">
-                                <% if (page < 4) { %>
-                                    <li class="">
-                                        <a href="<%= page-1 %>">
-                                            <i class="material-icons">chevron_right</i>
+                                <% if (query.page < 4) { %>
+                                    <li class="<% if (query.page == 1) { %>
+                                            <%=" disabled "%>
+                                        <% } %> ">
+                                        <a <% if (query.page > 1) { %>
+                                            href="?q=<%=query.q%>&amp;page=<%= query.page-1 %><% } %>" >
+                                                    <i class="material-icons">chevron_right</i>
                                         </a>
                                     </li>
-
-                                    <li class="waves-effect <% if (page == 1) { %>
-                            <%= " active " %>
-                            <% } %>">
-                                        <a href="1">1</a>
+                                    <li class="waves-effect <% if (query.page == 1) { %>
+                                        <%= " active " %>
+                                        <% } %>">
+                                        <a href="?q=<%=query.q%>&amp;page=1">1</a>
                                     </li>
-                                    <li class="waves-effect <% if (page == 2) { %>
+                                    <li class="waves-effect <% if (query.page == 2) { %>
                                 <%= " active " %>
                                 <% } %>">
-                                        <a href="2">2</a>
+                                        <a href="?q=<%=query.q%>&amp;page=2">2</a>
                                     </li>
-                                    <li class="waves-effect <% if (page == 3) { %>
+                                    <li class="waves-effect <% if (query.page == 3) { %>
                                 <%= " active " %>
                                 <% } %>">
-                                        <a href="3">3</a>
+                                        <a href="?q=<%=query.q%>&amp;page=3">3</a>
                                     </li>
                                     <li class="waves-block" />
-                                    <a href="4">4</a>
+                                    <a href="?q=<%=query.q%>&amp;page=4">4</a>
                                     </li>
                                     <li class="waves-effect">
-                                        <a href="5">5</a>
+                                        <a href="?q=<%=query.q%>&amp;page=5">5</a>
                                     </li>
                                     <li class="waves-effect">
-                                        <a href="<%= page+1 %>">
+                                        <a href="?q=<%=query.q%>&amp;page=<%= +query.page+1 %>">
                                             <i class="material-icons">chevron_left</i>
                                         </a>
                                     </li>
                                     <% } else { %>
                                         <li class="">
-                                            <a href="<%= page-1 %>">
+                                            <a href="?q=<%=query.q%>&amp;page=<%= query.page-1 %>">
                                                 <i class="material-icons">chevron_right</i>
                                             </a>
                                         </li>
                                         <li class="waves-effect">
-                                            <a href="<%= page-2 %>">
-                                                <%= page-2 %>
+                                            <a href="?q=<%=query.q%>&amp;page=<%= query.page-2 %>">
+                                                <%= +query.page-2 %>
                                             </a>
                                         </li>
                                         <li class="waves-effect">
-                                            <a href="<%= page-1 %>">
-                                                <%= page-1 %>
+                                            <a href="?q=<%=query.q%>&amp;page=<%= query.page-1 %>">
+                                                <%= +query.page-1 %>
                                             </a>
                                         </li>
                                         <li class="active">
-                                            <a href="<%= page %>">
-                                                <%= page %>
+                                            <a href="?q=<%=query.q%>&amp;page=<%= query.page %>">
+                                                <%= +query.page %>
                                             </a>
                                         </li>
                                         <li class="waves-effect">
-                                            <a href="<%= page+1 %>">
-                                                <%= page+1 %>
+                                            <a href="?q=<%=query.q%>&amp;page=<%= query.page+1 %>">
+                                                <%= +query.page+1 %>
                                             </a>
                                         </li>
                                         <li class="waves-effect">
-                                            <a href="<%= page+2 %>">
-                                                <%= page+2 %>
+                                            <a href="?q=<%=query.q%>&amp;page=<%= query.page+2 %>">
+                                                <%= +query.page+2 %>
                                             </a>
                                         </li>
                                         <li class="waves-effect">
-                                            <a href="<%= page+1 %>">
+                                            <a href="?q=<%=query.q%>&amp;page=<%= query.page+1 %>">
                                                 <i class="material-icons">chevron_left</i>
                                             </a>
                                         </li>

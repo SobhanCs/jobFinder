@@ -32,6 +32,10 @@ body {
     font-family: 'b koodak';
 }
 
+.pointer {
+    cursor: pointer;
+}
+
 /* main {
     /* background-image: url('../img/Handshake-close-up-of-executives/O6JTUC0.jpg');
       background-repeat: no-repeat;
@@ -88,7 +92,7 @@ nav .brand-logo {
     line-height: 26px;
     width: 100%;
     border: 0;
-    /* color: rgb(78, 78, 78); */
+    color: rgb(49, 49, 49) !important;
 }
 
 #idSearch input:focus, #searchBar input:focus {
@@ -120,10 +124,6 @@ main {
         content: 'chevron_left';
     }
 
-    main > div > aside {
-
-    }
-
         main > div > aside .btn-large {
             background-color: #E53935;
         }
@@ -139,6 +139,7 @@ main {
     main > div > section {
         padding-left: 15% !important;
         /* margin-left: 20px; */
+        margin-right: 9.5%;
     }
 
     main > .row > .col {
@@ -152,6 +153,8 @@ main {
 
 .card {
     margin: 0 0 12px;
+    /* border-radius: 8px 100px 100px 8px; */
+    border-radius: 8px;
 }
 
     .card .card-image img {
@@ -173,4 +176,16 @@ main {
 
     .card .card-content {
         padding: 24px 24px 24px;
+    }
+
+    .card .card-title a {
+        color: rgb(33, 33, 33);
+    }
+
+    .card .card-title a:hover {
+        color: #E53935;
+    }
+
+    .card .card-title a:visited {
+        color: rgb(156, 37, 35);
     }

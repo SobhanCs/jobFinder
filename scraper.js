@@ -19,6 +19,8 @@ const axios = require("axios");
 let $, repeated = 0,
   json = {},
   news = 0;
+  turn = 0
+var sites = ["jobinja","jobvision","karboom","sokanacademy"]
 
 var sources = {
   "jobinja": {
@@ -92,11 +94,33 @@ var sources = {
     "lastCrawlDate": true,
     lastJobThatSortedByDate: ""
 
+  },
+  "sokanacademy": {
+    "url": {
+      "prefix": "http://jobvision.ir/JobPost/Search?page=",
+      "suffix": "&SortBy=0&JobTitle&SelectedCity&SelectedIndustrial&SelectedLevelOfSeniority=&SelectedJobGroup=&SelectedWorkType=&SelectedWorkExprience=&MinMatchingPercent=0&MaxMatchingPercent=0&pageSize=40&IsForJobFair=false",
+      "page": 1
+    },
+    "target": {
+      "subject": ".value-text-size.jobtitle",
+      "linksOfJob": ".jobpost-box:not(.headBox)",
+      "jobBox": "div.jobpostmainbox",
+      "conditions":"#third",
+      "titles": ".title-text-size",
+      "values": ".value-text-size",
+      "logoOfCompany": "img.center-block",
+      // "companyName": ".title-text-size.jobtitle",
+      "jobPerPage": 40,
+      "siteName": "jobvision"
+    },
+    "lastCrawlDate": true,
+    lastJobThatSortedByDate: ""
+
   }
 }
 
 // crawler start
-console.log("Crawler started...");
+console.log("Crawler ready...");
 
 // Connect to MongoDB
 mongoose.connect("mongodb://localhost:27017/jobteam");
@@ -158,7 +182,16 @@ function generateUrl(source, url, target) {
 
 //main call
 // generateUrl(sources.jobinja, sources.jobinja.url, sources.jobinja.target)
-generateUrl(sources.karboom, sources.karboom.url, sources.karboom.target)
+function start(json,site){
+  if (site){
+    console.log("start scrap in " + site);
+    generateUrl(json[site], json[site].url, json[site].target)
+  }else{
+    console.log("The End")
+  }
+}
+
+start(sources , sites[turn])
 
 var index = 0; //start crawl job with index
 //this function get a link that is a new job ,this job need to reed data and target help us for select any items in detail
@@ -331,7 +364,9 @@ function getUrlDetails(object, urls, target) {
                       object.url.page++;
                       generateUrl(object, object.url, target)
                     } else {
-                      console.log("scaper done!!");
+                      console.log("scrap " + target.siteName + " done!!");
+                      turn ++;
+                      start(sources , sites[turn])
                     }
                   }
                 })
@@ -351,12 +386,15 @@ function getUrlDetails(object, urls, target) {
                   object.url.page++;
                   generateUrl(object, object.url, target)
                 } else {
-                  console.log("scaper done!!");
+                  console.log("scrap " + target.siteName + " done!!");
+                  turn ++;
+                  start(sources , sites[turn])
                 }
               }
             } else {
-              console.log("can not find new job ! ;)");
-
+              console.log("can not find new job from" + target.siteName);
+              turn ++ ;
+              start(sources , sites[turn])
             }
           }
         })
@@ -365,10 +403,6 @@ function getUrlDetails(object, urls, target) {
           console.log(error);
         })
       })
-}
-
-function finalJobinja(url,target,final){
-
 }
 
 var currentPage = 1;

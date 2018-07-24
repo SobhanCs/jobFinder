@@ -2,46 +2,46 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>crawler panel</title>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/iransans.css">
-    <link rel="stylesheet" href="css/panel.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>crawler panel</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/iransans.css">
+  <link rel="stylesheet" href="css/panel.css">
 </head>
 
 <body>
 
-    <!-- button and job items make with jquery -->
-    <div class="container mt-5">
-        <div class="row d-flex justify-content-center">
-            <div class="align-self-center w-50">
-                <button id="getnewJobs" class="btn btn-info w-100 shadow-lg rounded" style="min-width: 260px">
+  <!-- button and job items make with jquery -->
+  <div class="container mt-5">
+    <div class="row d-flex justify-content-center">
+      <div class="align-self-center w-75">
+        <button id="getnewJobs" class="btn btn-info w-75 shadow-lg rounded" style="min-width: 260px">
                     <span class="badge mr-3" dir="ltr">
-                      <span>جدید</span><%=news%>
+                      <%=news%>
                     </span>موقعیت های شغلی جدید را بده</button>
-                            <a href="/dashboard"  class="btn btn-outline-info shadow-lg rounded ml-auto" style="min-width: 150px">برگشتن</a>
+        <a href="/dashboard" class="btn btn-outline-info shadow-lg rounded ml-auto" style="min-width: 150px">برگشتن</a>
 
-                        </div>
+      </div>
 
-                        <div id="items" class="w-100 ">
+      <div id="items" class="w-100 ">
 
-                        </div>
+      </div>
 
-                    </div>
-                </div>
-                <!-- icon of pages under jobs that made with jquery -->
-                <div class="container my-4 w-100 d-flex justify-content-center">
-                    <div class="pagination items">
-                    </div>
-                </div>
-            </div>
+    </div>
+  </div>
+  <!-- icon of pages under jobs that made with jquery -->
+  <div class="container my-4 w-100 d-flex justify-content-center">
+    <div class="pagination items">
+    </div>
+  </div>
+  </div>
 
 
-    <script src="js/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/crawlerPanel.js"></script>
+  <script src="js/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/crawlerPanel.js"></script>
 
 </body>
 

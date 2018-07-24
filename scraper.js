@@ -412,87 +412,87 @@ function getUrlDetails(object, urls, target) {
 
       index++;
 
-      // jobModel.findOne({
-      //     "url": final.url
-      //   }, {
-      //     "_id": 0,
-      //     "url": 1
-      //   }, function(err, item) {
-      //     if (err) {
-      //       console.log(">>>>>>>>>>>>>>>>>>>>>>> Database Error: cant find url of undefined " + err);
-      //     }
-      //
-      //
-      //     if (item == null && statusCode == 200) {
-      //
-      //       counter.findByIdAndUpdate({
-      //         _id: "entityId"
-      //       }, {
-      //         $inc: {
-      //           seq: 0.5
-      //         }
-      //       }, function(err, res) {
-      //         if (err) throw err;
-      //
-      //         final.id = res.seq; // auto-increment id for our url
-      //
-      //       }).then(function(res) {
-      //
-      //         jobModel.insertMany(final,
-      //           function(err, doc) {
-      //             json[news] = final
-      //             news++
-      //
-      //             console.log("job state " + index + " added !  /  with status code : " + statusCode);
-      //
-      //             if (index < target.jobPerPage) {
-      //               getUrlDetails(object, urls, target)
-      //             } else {
-      //               index = 0;
-      //               console.log("----------------------------------\n");
-      //
-      //               if (object.url.page < 200) {
-      //                 object.url.page++;
-      //                 generateUrl(object, object.url, target)
-      //               } else {
-      //                 console.log("scrap " + target.siteName + " done!!\n");
-      //                 turn++;
-      //                 start(sources, sites[turn])
-      //               }
-      //             }
-      //           })
-      //       });
-      //
-      //     } else {
-      //       repeated++;
-      //       console.log("repeted job!!  --> " + repeated);
-      //       if (repeated < 10) { //limitForRepeated
-      //         if (index < target.jobPerPage) {
-      //           getUrlDetails(object, urls, target)
-      //         } else {
-      //           index = 0;
-      //           console.log("----------------------------------\n");
-      //
-      //           if (object.url.page < 200) {
-      //             object.url.page++;
-      //             generateUrl(object, object.url, target)
-      //           } else {
-      //             console.log("scrap " + target.siteName + " done!!\n");
-      //             turn++;
-      //             start(sources, sites[turn])
-      //           }
-      //         }
-      //       } else {
-      //         console.log("can not find new job from " + target.siteName + '\n');
-      //         turn++;
-      //         start(sources, sites[turn])
-      //       }
-      //     }
-      //   })
-      //   .catch(function(error) {
-      //     // handle error
-      //     console.log(error);
-      //   })
+      jobModel.findOne({
+          "url": final.url
+        }, {
+          "_id": 0,
+          "url": 1
+        }, function(err, item) {
+          if (err) {
+            console.log(">>>>>>>>>>>>>>>>>>>>>>> Database Error: cant find url of undefined " + err);
+          }
+
+
+          if (item == null && statusCode == 200) {
+
+            counter.findByIdAndUpdate({
+              _id: "entityId"
+            }, {
+              $inc: {
+                seq: 0.5
+              }
+            }, function(err, res) {
+              if (err) throw err;
+
+              final.id = res.seq; // auto-increment id for our url
+
+            }).then(function(res) {
+
+              jobModel.insertMany(final,
+                function(err, doc) {
+                  json[news] = final
+                  news++
+
+                  console.log("job state " + index + " added !  /  with status code : " + statusCode);
+
+                  if (index < target.jobPerPage) {
+                    getUrlDetails(object, urls, target)
+                  } else {
+                    index = 0;
+                    console.log("----------------------------------\n");
+
+                    if (object.url.page < 200) {
+                      object.url.page++;
+                      generateUrl(object, object.url, target)
+                    } else {
+                      console.log("scrap " + target.siteName + " done!!\n");
+                      turn++;
+                      start(sources, sites[turn])
+                    }
+                  }
+                })
+            });
+
+          } else {
+            repeated++;
+            console.log("repeted job!!  --> " + repeated);
+            if (repeated < 10) { //limitForRepeated
+              if (index < target.jobPerPage) {
+                getUrlDetails(object, urls, target)
+              } else {
+                index = 0;
+                console.log("----------------------------------\n");
+
+                if (object.url.page < 200) {
+                  object.url.page++;
+                  generateUrl(object, object.url, target)
+                } else {
+                  console.log("scrap " + target.siteName + " done!!\n");
+                  turn++;
+                  start(sources, sites[turn])
+                }
+              }
+            } else {
+              console.log("can not find new job from " + target.siteName + '\n');
+              turn++;
+              start(sources, sites[turn])
+            }
+          }
+        })
+        .catch(function(error) {
+          // handle error
+          console.log(error);
+        })
     })
 }
 

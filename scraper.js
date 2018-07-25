@@ -100,6 +100,29 @@ var sources = {
 
   },
   "sokanacademy": {
+    "url": {
+      "prefix": "https://sokanacademy.com/jobs/%D8%A7%D8%B3%D8%AA%D8%AE%D8%AF%D8%A7%D9%85-%D8%A8%D8%B1%D9%86%D8%A7%D9%85%D9%87-%D9%86%D9%88%DB%8C%D8%B3/page/",
+      "suffix": "?pid=&cid=",
+      "page": 1
+    },
+    "target": {
+      "subject": ".box > .job-title h1",
+      "linksOfJob": ".jobs-index-row .company-detail-btn > a",
+      "jobBox": ".box > .job-detail",
+      "conditions":"#third",
+      "titles": ".box > .job-details ul.list-inline > li strong",
+      "values": ".box > .job-details ul.list-inline > li strong",
+      "logoOfCompany": ".box > .com-cover .job-con-avatar",
+      "companyName": ".box > .com-cover > a > h2",
+      "location": ".box > .com-cover > ul.list-inline li:first-child",
+      "description": ".box > .job-des p",       // eq(0): descOfCompany, eq(1): descOfJob
+      "jobPerPage": 100,
+      "siteName": "sokanacademy",
+      "siteUrl": "https://sokanacademy.com"
+    },
+    "lastCrawlDate": true,
+    lastJobThatSortedByDate: ""
+
   }
 }
 

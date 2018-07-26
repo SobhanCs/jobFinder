@@ -44,7 +44,7 @@ function createNewJobs(json) {
             '<h6>تحصیلات</h6>' +
             '<p class = "card-text" >' + (json[index].education ? json[index].education : "تعریف نشده") + '</p>' +
             '<h6>رشته های مربوط</h6>' +
-            '<p class = "card-text" >' + (json[index].relativeField ? json[index].relativeField : "تعریف نشده") + '</p>' +
+            '<p class = "card-text" >' + (json[index].relativeField.length > 0  ? json[index].relativeField : "تعریف نشده") + '</p>' +
             '<h6>حقوق</h6>' +
             '<p class = "card-text" >' + (json[index].Salary ? json[index].Salary : "تعریف نشده") + '</p>' +
             '<h6>مهلت ارسال رزومه</h6>' +
@@ -56,7 +56,7 @@ function createNewJobs(json) {
             '<h6>نوع همکاری</h6>' +
             '<p class = "card-text" >' + (json[index].typeOfCollaboration ? json[index].typeOfCollaboration : "تعریف نشده") + '</p>' +
             '<h6>مهارت های مورد نیاز</h6>' +
-            '<p class = "card-text" >' + (json[index].skill ? json[index].skill : "تعریف نشده") + '</p>' +
+            '<p class = "card-text" >' + (json[index].skill.length > 0  ? json[index].skill : "تعریف نشده") + '</p>' +
             '<h6>جنسیت</h6>' +
             '<p class = "card-text" >' + (json[index].sex ? json[index].sex : "تعریف نشده") + '</p>' +
             '<h6>سابقه کار</h6>' +

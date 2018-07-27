@@ -36,7 +36,10 @@ var jobSchema = new mongoose.Schema({
     experience: String,
     logoSource: String,
     visibility: String,
-    minExperience: String
+    minExperience: String,
+    maritalStatus: String,
+    minAge:String,
+    maxAge:String
 });
 
 module.exports = mongoose.model("jobModel", jobSchema, 'jobModel'); // the name of collection by erfan
